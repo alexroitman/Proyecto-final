@@ -1,0 +1,4 @@
+Z:\2016- BT6IA\Proyecto final\sorongo\WebApplication1\WebApplication1\bin\WebApplication1.dll
+Z:\2016- BT6IA\Proyecto final\sorongo\WebApplication1\WebApplication1\bin\WebApplication1.pdb
+Z:\2016- BT6IA\Proyecto final\sorongo\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
+Z:\2016- BT6IA\Proyecto final\sorongo\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb

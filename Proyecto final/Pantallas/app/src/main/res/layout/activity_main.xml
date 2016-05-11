@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.a41758511.pantallas.MainActivity"
+    android:background="#ff6303">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YA ME SUBI!"
+        android:id="@+id/textView" />
+
+    <Spinner
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_marginTop="87dp"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/textView"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp"
+        android:background="#a74f4f" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ya me subi"
+        android:id="@+id/button"
+        android:layout_marginTop="119dp"
+        android:layout_below="@+id/spinner"
+        android:layout_toLeftOf="@+id/spinner"
+        android:layout_toStartOf="@+id/spinner" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrar subida"
+        android:id="@+id/button2"
+        android:singleLine="false"
+        android:layout_alignTop="@+id/button"
+        android:layout_toRightOf="@+id/spinner"
+        android:layout_toEndOf="@+id/spinner" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subirme al mas cercano"
+        android:id="@+id/button3"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
