@@ -22,6 +22,7 @@ Button btn;
         setContentView(R.layout.activity_main);
         List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
+        items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
         items.add(new SocialNetwork("Linea 15", R.drawable.a15));
         items.add(new SocialNetwork("Linea 36", R.drawable.a36));
         items.add(new SocialNetwork("Linea 55", R.drawable.a55));
