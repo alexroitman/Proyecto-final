@@ -1,15 +1,29 @@
 package com.aexample.a41758511.myapplication;
 
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +36,10 @@ Button btn;
         setContentView(R.layout.activity_main);
         List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-        items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
+        new ProgressTask(MainActivity.this).execute();
+
+
+       /* items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
         items.add(new SocialNetwork("Linea 15", R.drawable.a15));
         items.add(new SocialNetwork("Linea 36", R.drawable.a36));
         items.add(new SocialNetwork("Linea 55", R.drawable.a55));
@@ -43,7 +60,7 @@ Button btn;
         items.add(new SocialNetwork("Linea 140", R.drawable.a140));
         items.add(new SocialNetwork("Linea 160", R.drawable.a160));
         items.add(new SocialNetwork("Linea 166", R.drawable.a166));
-        items.add(new SocialNetwork("Linea 76", R.drawable.a76));
+        items.add(new SocialNetwork("Linea 76", R.drawable.a76));*/
 btn=(Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,5 +92,71 @@ btn=(Button) findViewById(R.id.button);
             }
         });
         }
-    }
+    private static final String numero = "numero";
+    private static final String icono = "icono";
+    private static final String fuel = "fuel";
 
+    List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
+
+    Spinner spin ;
+    private class ProgressTask extends AsyncTask<String, Void, Boolean> {
+        private ProgressDialog dialog;
+
+        public ProgressTask(Context activity) {
+
+            Log.i("1", "Called");
+            context = activity;
+            dialog = new ProgressDialog(context);
+        }
+
+        private Context context;
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Progress start");
+            this.dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            SpinnerAdapter adapter = new SocialNetworkSpinnerAdapter(context, jsonlist);
+            spin.setAdapter(adapter);
+            //lv = getListView();
+
+
+        }
+
+        protected Boolean doInBackground(final String... args) {
+
+            JsonParser jParser = new JsonParser();
+            JSONArray json = jParser.getJSONFromUrl("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
+
+            for (int i = 0; i < json.length(); i++) {
+
+                try {
+                    JSONObject c = json.getJSONObject(i);
+                    String vLinea = c.getString(numero);
+
+                    String vIcono = c.getString(icono);
+
+
+                    HashMap<String, String> map = new HashMap<String, String>();
+
+                    jsonlist.add(new SocialNetwork(vLinea,vIcono));
+
+
+
+
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+
+        }
+
+    }
+    }

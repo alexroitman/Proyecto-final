@@ -6,9 +6,9 @@ package com.aexample.a41758511.myapplication;
 public class SocialNetwork {
     private String name;
 
-    private int icon;
+    private String icon;
 
-    public SocialNetwork(String nombre, int icono)
+    public SocialNetwork(String nombre, String icono)
     {
         super();
         this.name = nombre;
@@ -16,8 +16,9 @@ public class SocialNetwork {
     }
 
     public String getNombre()
+
     {
-        return name;
+return name;
     }
 
     public void setNombre(String nombre)
@@ -25,12 +26,12 @@ public class SocialNetwork {
         this.name = nombre;
     }
 
-    public int getIcono()
+    public String getIcono()
     {
         return icon;
     }
 
-    public void setIcono(int icono)
+    public void setIcono(String icono)
     {
         this.icon = icono;
     }

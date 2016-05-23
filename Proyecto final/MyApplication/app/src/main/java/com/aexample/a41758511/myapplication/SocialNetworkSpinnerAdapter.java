@@ -37,7 +37,7 @@ public class SocialNetworkSpinnerAdapter extends ArrayAdapter<SocialNetwork>
             convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.activity_spinner_selected_item,null);
         }
         ((TextView) convertView.findViewById(R.id.texto)).setText(datos.get(position).getNombre());
-        ((ImageView) convertView.findViewById(R.id.icono)).setBackgroundResource(datos.get(position).getIcono());
+        ((ImageView) convertView.findViewById(R.id.icono)).setBackgroundResource(Integer.parseInt(datos.get(position).getIcono()));
 
         return convertView;
     }
@@ -64,7 +64,7 @@ public class SocialNetworkSpinnerAdapter extends ArrayAdapter<SocialNetwork>
 
         //rellenamos el layout con los datos de la fila que se está procesando
         SocialNetwork redSocial = datos.get(position);
-        ((SocialNetworkHolder) row.getTag()).getIcono().setImageResource(redSocial.getIcono());
+        ((SocialNetworkHolder) row.getTag()).getIcono().setImageResource(Integer.parseInt(redSocial.getIcono()));
         ((SocialNetworkHolder) row.getTag()).getTextView().setText(redSocial.getNombre());
 
         return row;
