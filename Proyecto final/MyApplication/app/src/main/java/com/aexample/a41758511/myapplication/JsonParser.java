@@ -1,5 +1,8 @@
 package com.aexample.a41758511.myapplication;
+import android.app.VoiceInteractor;
 import android.util.Log;
+
+import com.google.android.gms.appdatasearch.GetRecentContextCall;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,6 +18,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 public class JsonParser {
 
@@ -25,39 +33,10 @@ public class JsonParser {
     public JsonParser() {
     }
 
-    public JSONArray getJSONFromUrl(String url) {
+  /*  public JSONArray getJSONFromUrl(String url) {
 
-        StringBuilder builder = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
-        try {
-            HttpResponse response = client.execute(httpGet);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) {
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-            } else {
-                Log.e("Error....", "Failed to download file");
-            }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            jarray = new JSONArray( builder.toString());
-        } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
-        }
 
-        return jarray;
+    }*/
 
-    }
 }

@@ -18,10 +18,15 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +41,7 @@ Button btn;
         setContentView(R.layout.activity_main);
    //     List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-        new ProgressTask(MainActivity.this).execute();
+        new ProgressTask(MainActivity.this).execute("http://localhost:11504/api/linea");
 
 
        /* items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
@@ -96,6 +101,7 @@ btn=(Button) findViewById(R.id.button);
     private static final String icono = "icono";
     private static final String fuel = "fuel";
 
+<<<<<<< HEAD
     List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
 
     Spinner spin ;
@@ -159,4 +165,8 @@ Log.d("Hola"en doin);
         }
 
     }
+=======
+
+
+>>>>>>> origin/master
     }
