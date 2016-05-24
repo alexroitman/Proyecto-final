@@ -34,7 +34,7 @@ Button btn;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
+   //     List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
         new ProgressTask(MainActivity.this).execute();
 
@@ -75,7 +75,7 @@ btn=(Button) findViewById(R.id.button);
 
 
 
-        spinner = (Spinner) findViewById(R.id.spinner);
+        /*spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,items));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -90,7 +90,7 @@ btn=(Button) findViewById(R.id.button);
             {
                 //nothing
             }
-        });
+        });*/
         }
     private static final String numero = "numero";
     private static final String icono = "icono";
@@ -129,7 +129,7 @@ btn=(Button) findViewById(R.id.button);
         }
 
         protected Boolean doInBackground(final String... args) {
-
+Log.d("Hola"en doin);
             JsonParser jParser = new JsonParser();
             JSONArray json = jParser.getJSONFromUrl("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
 
@@ -142,7 +142,7 @@ btn=(Button) findViewById(R.id.button);
                     String vIcono = c.getString(icono);
 
 
-                    HashMap<String, String> map = new HashMap<String, String>();
+           //         HashMap<String, String> map = new HashMap<String, String>();
 
                     jsonlist.add(new SocialNetwork(vLinea,vIcono));
 
