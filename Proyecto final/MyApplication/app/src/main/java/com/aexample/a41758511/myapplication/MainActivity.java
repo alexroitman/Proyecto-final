@@ -36,7 +36,7 @@ Button btn;
         setContentView(R.layout.activity_main);
    //     List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-        new ProgressTask(MainActivity.this).execute();
+        new ProgressTask(MainActivity.this).execute("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
 
 
        /* items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
@@ -92,71 +92,5 @@ btn=(Button) findViewById(R.id.button);
             }
         });*/
         }
-    private static final String numero = "numero";
-    private static final String icono = "icono";
-    private static final String fuel = "fuel";
-
-    List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
-
-    Spinner spin ;
-    private class ProgressTask extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog dialog;
-
-        public ProgressTask(Context activity) {
-
-            Log.i("1", "Called");
-            context = activity;
-            dialog = new ProgressDialog(context);
-        }
-
-        private Context context;
-
-        protected void onPreExecute() {
-            this.dialog.setMessage("Progress start");
-            this.dialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            SpinnerAdapter adapter = new SocialNetworkSpinnerAdapter(context, jsonlist);
-            spin.setAdapter(adapter);
-            //lv = getListView();
-
-
-        }
-
-        protected Boolean doInBackground(final String... args) {
-Log.d("Hola"en doin);
-            JsonParser jParser = new JsonParser();
-            JSONArray json = jParser.getJSONFromUrl("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
-
-            for (int i = 0; i < json.length(); i++) {
-
-                try {
-                    JSONObject c = json.getJSONObject(i);
-                    String vLinea = c.getString(numero);
-
-                    String vIcono = c.getString(icono);
-
-
-           //         HashMap<String, String> map = new HashMap<String, String>();
-
-                    jsonlist.add(new SocialNetwork(vLinea,vIcono));
-
-
-
-
-                } catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-
-        }
-
     }
-    }
+
