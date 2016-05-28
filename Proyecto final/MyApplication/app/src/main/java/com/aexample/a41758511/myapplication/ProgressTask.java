@@ -93,7 +93,7 @@ class ProgressTask extends AsyncTask<String, Void, ArrayList<SocialNetwork>> {
 
             JSONObject jsonGeometry = jsonResultado.getJSONObject("geometry");
             JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
-            String Ico = jsonLocation.getString("Icono");                     // Obtiene latitud
+            Integer Ico = jsonLocation.getInt("Icono");                     // Obtiene latitud
             String Num = jsonLocation.getString("Numero");                     // Obtiene longitud
 
 

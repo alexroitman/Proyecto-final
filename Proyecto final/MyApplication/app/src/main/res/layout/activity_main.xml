@@ -30,7 +30,7 @@
         android:layout_alignTop="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_x="-2dp"
+        android:layout_x="0dp"
         android:layout_y="238dp" />
 
     <Button

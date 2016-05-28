@@ -23,7 +23,7 @@ public class Ubicacion implements LocationListener {
         this.ctx=ctx;
         locationManager=(LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         provedor=LocationManager.NETWORK_PROVIDER;
-        locationManager.requestLocationUpdates(provedor,1000,1,this);
+        locationManager.requestLocationUpdates(provedor,100,1,this);
         NetON=locationManager.isProviderEnabled(provedor);
 
 getLocation();
@@ -57,11 +57,12 @@ getLocation();
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        Toast.makeText(this.ctx, "RED ACTIVADA", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        Toast.makeText(this.ctx, "RED DESACTIVADA", Toast.LENGTH_SHORT).show();
 
     }
 }

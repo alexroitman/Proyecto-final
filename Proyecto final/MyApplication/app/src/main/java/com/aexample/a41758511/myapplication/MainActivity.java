@@ -4,6 +4,9 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,24 +25,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-
+    String nombre;
     private Spinner spinner;
 Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-   //     List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
+        List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-        new ProgressTask(MainActivity.this).execute("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
+      //  new ProgressTask(MainActivity.this).execute("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
 
 
-       /* items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
+        items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
         items.add(new SocialNetwork("Linea 15", R.drawable.a15));
         items.add(new SocialNetwork("Linea 36", R.drawable.a36));
         items.add(new SocialNetwork("Linea 55", R.drawable.a55));
@@ -60,12 +65,16 @@ Button btn;
         items.add(new SocialNetwork("Linea 140", R.drawable.a140));
         items.add(new SocialNetwork("Linea 160", R.drawable.a160));
         items.add(new SocialNetwork("Linea 166", R.drawable.a166));
-        items.add(new SocialNetwork("Linea 76", R.drawable.a76));*/
+        items.add(new SocialNetwork("Linea 76", R.drawable.a76));
+
 btn=(Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(MainActivity.this,MapsActivity.class);
+                Bundle b=new Bundle();
+                b.putString("Linea",nombre);
+                i.putExtras(b);
                 startActivity(i);
             }
         });
@@ -75,14 +84,15 @@ btn=(Button) findViewById(R.id.button);
 
 
 
-        /*spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,items));
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
             {
-                Toast.makeText(adapterView.getContext(), ((SocialNetwork) adapterView.getItemAtPosition(position)).getNombre(), Toast.LENGTH_SHORT).show();
+                nombre=((SocialNetwork) adapterView.getItemAtPosition(position)).getNombre();
             }
 
             @Override
@@ -90,7 +100,9 @@ btn=(Button) findViewById(R.id.button);
             {
                 //nothing
             }
-        });*/
+        });
         }
-    }
+
+
+}
 
