@@ -23,6 +23,7 @@ android:background="#c188afd8">
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/blank"
+
         android:layout_x="0dp"
         android:layout_y="420dp"
         android:visibility="visible" />

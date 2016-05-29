@@ -21,43 +21,66 @@
         android:layout_y="142dp" />
 
     <Button
-        android:layout_width="130dp"
-        android:layout_height="90dp"
+        android:layout_width="135dp"
+        android:layout_height="95dp"
         android:text="Registrar \n subida"
         android:id="@+id/button"
         android:background="@layout/button_bg_round"
+        android:textColor="#FFFFFF"
         android:textSize="20dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="1"
+        android:shadowDy="4"
+        android:shadowRadius="5"
         android:layout_alignTop="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_x="0dp"
+        android:textStyle="bold"
         android:layout_y="238dp" />
+
+
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="130dp"
-        android:layout_height="90dp"
-        android:text="Seguir \n linéa"
+        android:layout_width="135dp"
+        android:layout_height="95dp"
+        android:text="SEGUIR \n LINEA"
         android:id="@+id/button2"
         android:background="@layout/button_bg_round"
         android:textSize="20dp"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="1"
+        android:shadowDy="4"
+        android:shadowRadius="5"
         android:layout_above="@+id/button3"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_x="153dp"
-        android:layout_y="240dp" />
+        android:layout_y="240dp"
+        android:textStyle="bold"
+        />
 
     <Button
-        android:layout_width="170dp"
-        android:layout_height="110dp"
+        android:layout_width="165dp"
+        android:layout_height="105dp"
         android:text="Subirse al colectivo mas cercano"
         android:id="@+id/button3"
         android:background="@layout/button_bg_round"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="1"
+        android:shadowDy="4"
+        android:textColor="#FFFFFF"
+        android:shadowRadius="5"
         android:textSize="20dp"
         android:layout_x="60dp"
-        android:layout_y="365dp" />
+        android:layout_y="365dp"
+    android:textStyle="bold"
+
+        />
 
     <ImageView
         android:layout_width="144dp"
