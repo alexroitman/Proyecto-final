@@ -15,6 +15,7 @@ package com.aexample.a41758511.myapplication;
 
         import org.apache.http.HttpResponse;
         import org.apache.http.client.HttpClient;
+        import org.apache.http.client.methods.HttpGet;
         import org.apache.http.client.methods.HttpPost;
         import org.apache.http.impl.client.DefaultHttpClient;
         import org.apache.http.util.EntityUtils;
@@ -30,7 +31,7 @@ package com.aexample.a41758511.myapplication;
  * Created by 41758511 on 24/5/2016.
  */
 
-class ProgressTask extends AsyncTask<String, Void, ArrayList<SocialNetwork>> {
+class ProgressTask extends AsyncTask<String, Void, List<SocialNetwork>> {
     private ProgressDialog dialog;
 
     public ProgressTask(Context activity) {
@@ -49,59 +50,52 @@ class ProgressTask extends AsyncTask<String, Void, ArrayList<SocialNetwork>> {
 
     List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
 
-    Spinner spin ;
-    protected void onPostExecute(final Boolean success) {
+    Spinner spinner ;
+    protected void onPostExecute(  List<SocialNetwork> lislin) {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        SpinnerAdapter adapter = new SocialNetworkSpinnerAdapter(context, jsonlist);
-        spin.setAdapter(adapter);
+        spinner = (Spinner) spinner.findViewById(R.id.spinner);
+        spinner.setAdapter(new SocialNetworkSpinnerAdapter(MainActivity.ct,lislin));
         //lv = getListView();
 
 
     }
-    HttpClient client = new DefaultHttpClient();
+   private OkHttpClient client = new OkHttpClient();
     @Override
-    protected ArrayList<SocialNetwork> doInBackground(String... params) {
-
+    protected List<SocialNetwork> doInBackground(String... params) {
         String url = params[0];
 
-       /* Request request = new Request.Builder()
+        Request request = new Request.Builder()
                 .url(url)
-                .build();*/
-        HttpPost myConnection = new HttpPost(url);
+                .build();
         try {
-
-            HttpResponse response = client.execute(myConnection);        // Llamado al Google API
-            String str = EntityUtils.toString(response.getEntity(), "UTF-8");
-            return parsearResultado(str);      // Convierto el resultado en ArrayList<Direccion>
-
+            Response response = client.newCall(request).execute();
+           List<SocialNetwork> li=parsearResultado(response.body().string());
+            return li;
         } catch (IOException | JSONException e) {
-            Log.d("Error",e.getMessage());                          // Error de Network o al parsear JSON
+            Log.d("Error", e.getMessage());
             return new ArrayList<SocialNetwork>();
         }
-
     }
-    ArrayList<SocialNetwork> parsearResultado(String JSONstr) throws JSONException {
-        ArrayList<SocialNetwork> lineas = new ArrayList<>();
-        JSONObject json = new JSONObject(JSONstr);                 // Convierto el String recibido a JSONObject
-        JSONArray jsonLineas = json.getJSONArray("results");  // Array - una busqueda puede retornar varios resultados
-        for (int i=0; i<jsonLineas.length(); i++) {
-            // Recorro los resultados recibidos
-            JSONObject jsonResultado = jsonLineas.getJSONObject(i);
-            String jsonAddress = jsonResultado.getString("formatted_address");  // Obtiene la direccion formateada
 
-            JSONObject jsonGeometry = jsonResultado.getJSONObject("geometry");
-            JSONObject jsonLocation = jsonGeometry.getJSONObject("location");
-            Integer Ico = jsonLocation.getInt("Icono");                     // Obtiene latitud
-            String Num = jsonLocation.getString("Numero");                     // Obtiene longitud
+    List<SocialNetwork> parsearResultado(String JSONstr) throws JSONException {
+        ArrayList<SocialNetwork> eventos = new ArrayList<>();
+        JSONArray jsonEventos = new JSONArray(JSONstr);
+        List<SocialNetwork> lin= new ArrayList<SocialNetwork>();
+        for (int i = 0; i < jsonEventos.length(); i++) {
+            JSONObject jsonResultado = jsonEventos.getJSONObject(i);
+            int id = jsonResultado.getInt("Id");
+            Integer Numero = jsonResultado.getInt("Numero");
+            String Icono = jsonResultado.getString("Imagen");
 
 
-            SocialNetwork d = new SocialNetwork(Num, Ico);                    // Creo nueva instancia de direccion
-            lineas.add(d);                                                 // Agrego objeto d al array list
-
+         //   SocialNetwork e = new SocialNetwork(Numero,Icono);
+            lin.add(new SocialNetwork(Numero, "@R.drawable."+Icono));
+         //   eventos.add(e);
         }
-        return lineas;
+        return lin;
     }
 
-}
+
+    }

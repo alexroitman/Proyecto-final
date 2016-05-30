@@ -4,34 +4,34 @@ package com.aexample.a41758511.myapplication;
  * Created by Alex on 09/05/2016.
  */
 public class SocialNetwork {
-    private String name;
+    private Integer name;
 
-    private Integer icon;
+    private String icon;
 
-    public SocialNetwork(String nombre, Integer icono)
+    public SocialNetwork(Integer nombre, String icono)
     {
         super();
         this.name = nombre;
         this.icon = icono;
     }
 
-    public String getNombre()
+    public Integer getNombre()
 
     {
 return name;
     }
 
-    public void setNombre(String nombre)
+    public void setNombre(Integer nombre)
     {
         this.name = nombre;
     }
 
-    public Integer getIcono()
+    public String getIcono()
     {
         return icon;
     }
 
-    public void setIcono(Integer icono)
+    public void setIcono(String icono)
     {
         this.icon = icono;
     }

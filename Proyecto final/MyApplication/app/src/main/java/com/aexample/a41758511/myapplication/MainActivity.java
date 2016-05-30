@@ -32,18 +32,19 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    String nombre;
+    Integer nombre;
     private Spinner spinner;
 Button btn;
+    public static Context ct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-      //  new ProgressTask(MainActivity.this).execute("http://basededatosremotas.meximas.com/ramiroconnect/get_all_empresas.php");
-
-
+     List<SocialNetwork> lisLin= (List<SocialNetwork>) new ProgressTask(MainActivity.this).execute("http://bdalex.hol.es/bd/listar.php");
+        ct=getApplicationContext();
+/*
         items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
         items.add(new SocialNetwork("Linea 15", R.drawable.a15));
         items.add(new SocialNetwork("Linea 36", R.drawable.a36));
@@ -66,14 +67,14 @@ Button btn;
         items.add(new SocialNetwork("Linea 160", R.drawable.a160));
         items.add(new SocialNetwork("Linea 166", R.drawable.a166));
         items.add(new SocialNetwork("Linea 76", R.drawable.a76));
-
+*/
 btn=(Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(MainActivity.this,MapsActivity.class);
                 Bundle b=new Bundle();
-                b.putString("Linea",nombre);
+                b.putInt("Linea",nombre);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -85,7 +86,7 @@ btn=(Button) findViewById(R.id.button);
 
 
         spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,items));
+        spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,lisLin));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
