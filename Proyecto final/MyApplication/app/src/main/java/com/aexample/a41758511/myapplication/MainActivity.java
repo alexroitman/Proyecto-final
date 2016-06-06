@@ -32,19 +32,32 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    Integer nombre;
-    private Spinner spinner;
+   public static String nombre;
+    public static List<SocialNetwork> lislin = new ArrayList<>();
+    public static Spinner spinner;
+    public static SocialNetworkSpinnerAdapter adapter;
 Button btn;
     public static Context ct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<SocialNetwork> items = new ArrayList<SocialNetwork>(15);
+        spinner=(Spinner)findViewById(R.id.spinner);
+
+        List<SocialNetwork> items = new ArrayList<SocialNetwork>(22);
+
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-     List<SocialNetwork> lisLin= (List<SocialNetwork>) new ProgressTask(MainActivity.this).execute("http://bdalex.hol.es/bd/listar.php");
-        ct=getApplicationContext();
-/*
+    new ProgressTask(MainActivity.this,spinner).execute("http://bdalex.hol.es/bd/listarlineas.php");
+        //ct=getApplicationContext();
+        try {
+            Thread.sleep(500);
+        }catch (Exception e){
+
+
+        }
+        adapter = new SocialNetworkSpinnerAdapter(getApplicationContext(),lislin);
+        spinner.setAdapter(adapter);
+        /*/
         items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
         items.add(new SocialNetwork("Linea 15", R.drawable.a15));
         items.add(new SocialNetwork("Linea 36", R.drawable.a36));
@@ -53,12 +66,12 @@ Button btn;
         items.add(new SocialNetwork("Linea 92", R.drawable.a92));
         items.add(new SocialNetwork("Linea 110", R.drawable.a110));
         items.add(new SocialNetwork("Linea 111", R.drawable.a111));
-        items.add(new SocialNetwork("Linea 141", R.drawable.a141));
-        items.add(new SocialNetwork("Linea 106", R.drawable.a106));
-        items.add(new SocialNetwork("Linea 109", R.drawable.a109));
         items.add(new SocialNetwork("Linea 134", R.drawable.a134));
               items.add(new SocialNetwork("Linea 24", R.drawable.a24));
         items.add(new SocialNetwork("Linea 34", R.drawable.a34));
+        items.add((new SocialNetwork("Linea 141", R.drawable.a141)));
+        items.add(new SocialNetwork("Linea 106", R.drawable.a106));
+        items.add(new SocialNetwork("Linea 109", R.drawable.a109));
         items.add(new SocialNetwork("Linea 36", R.drawable.a36));
         items.add(new SocialNetwork("Linea 53", R.drawable.a53));
         items.add(new SocialNetwork("Linea 99", R.drawable.a99));
@@ -73,9 +86,9 @@ btn=(Button) findViewById(R.id.button);
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(MainActivity.this,MapsActivity.class);
-                Bundle b=new Bundle();
-                b.putInt("Linea",nombre);
-                i.putExtras(b);
+           //     Bundle b=new Bundle();
+            //    b.putInt("Linea",nombre);
+            //    i.putExtras(b);
                 startActivity(i);
             }
         });
@@ -85,14 +98,16 @@ btn=(Button) findViewById(R.id.button);
 
 
 
-        spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,lisLin));
+      //  spinner = (Spinner) findViewById(R.id.spinner);
+      //  spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,items));
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
             {
+              //  nombre= (Integer) adapterView.getItemAtPosition(position);
+                adapterView.setSelection(position);
                 nombre=((SocialNetwork) adapterView.getItemAtPosition(position)).getNombre();
             }
 

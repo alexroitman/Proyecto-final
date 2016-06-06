@@ -2,10 +2,14 @@ package com.aexample.a41758511.myapplication;
 
 
 
+        import android.app.Activity;
         import android.app.ProgressDialog;
         import android.content.Context;
+        import android.content.res.Resources;
+        import android.graphics.drawable.Drawable;
         import android.os.AsyncTask;
         import android.util.Log;
+        import android.widget.ArrayAdapter;
         import android.widget.Spinner;
         import android.widget.SpinnerAdapter;
 
@@ -24,6 +28,7 @@ package com.aexample.a41758511.myapplication;
         import org.json.JSONObject;
 
         import java.io.IOException;
+        import java.lang.reflect.Array;
         import java.util.ArrayList;
         import java.util.List;
 
@@ -33,21 +38,23 @@ package com.aexample.a41758511.myapplication;
 
 class ProgressTask extends AsyncTask<String, Void, List<SocialNetwork>> {
     private ProgressDialog dialog;
+    Spinner sp;
 
-    public ProgressTask(Context activity) {
+    public ProgressTask(Context activity,Spinner s) {
 
         Log.i("1", "Called");
         context = activity;
         dialog = new ProgressDialog(context);
+        s=sp;
     }
 
-    private Context context;
+    public Context context;
 
     protected void onPreExecute() {
         this.dialog.setMessage("Progress start");
         this.dialog.show();
     }
-
+    ArrayAdapter<String> adapter;
     List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
 
     Spinner spinner ;
@@ -55,13 +62,21 @@ class ProgressTask extends AsyncTask<String, Void, List<SocialNetwork>> {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        spinner = (Spinner) spinner.findViewById(R.id.spinner);
-        spinner.setAdapter(new SocialNetworkSpinnerAdapter(MainActivity.ct,lislin));
+        for (SocialNetwork esteSocial:lislin) {
+
+            MainActivity.lislin.add(esteSocial);
+        }
+        MainActivity.adapter.notifyDataSetChanged();
+
+        Log.d("Alex","error");
+//        spinner = (Spinner) spinner.findViewById(R.id.spinner);
+    //    spinner.setAdapter(new SocialNetworkSpinnerAdapter(MainActivity.ct,lislin));
         //lv = getListView();
 
 
     }
    private OkHttpClient client = new OkHttpClient();
+    Integer[] a=new Integer[]{};
     @Override
     protected List<SocialNetwork> doInBackground(String... params) {
         String url = params[0];
@@ -71,29 +86,33 @@ class ProgressTask extends AsyncTask<String, Void, List<SocialNetwork>> {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-           List<SocialNetwork> li=parsearResultado(response.body().string());
-            return li;
+
+            return parsearResultado(response.body().string());
         } catch (IOException | JSONException e) {
             Log.d("Error", e.getMessage());
             return new ArrayList<SocialNetwork>();
         }
     }
-
+   public static List<SocialNetwork> lin;
     List<SocialNetwork> parsearResultado(String JSONstr) throws JSONException {
-        ArrayList<SocialNetwork> eventos = new ArrayList<>();
+        List<SocialNetwork> eventos = new ArrayList<>();
         JSONArray jsonEventos = new JSONArray(JSONstr);
-        List<SocialNetwork> lin= new ArrayList<SocialNetwork>();
+
+        lin= new ArrayList<SocialNetwork>();
         for (int i = 0; i < jsonEventos.length(); i++) {
             JSONObject jsonResultado = jsonEventos.getJSONObject(i);
             int id = jsonResultado.getInt("Id");
             Integer Numero = jsonResultado.getInt("Numero");
             String Icono = jsonResultado.getString("Imagen");
 
+            Resources res = context.getResources();
 
-         //   SocialNetwork e = new SocialNetwork(Numero,Icono);
-            lin.add(new SocialNetwork(Numero, "@R.drawable."+Icono));
+            int ic = res.getIdentifier(Icono, "drawable", context.getApplicationContext().getPackageName());
+            //   SocialNetwork e = new SocialNetwork(Numero,Icono);
+            lin.add(new SocialNetwork(Numero.toString(),ic));
          //   eventos.add(e);
         }
+
         return lin;
     }
 

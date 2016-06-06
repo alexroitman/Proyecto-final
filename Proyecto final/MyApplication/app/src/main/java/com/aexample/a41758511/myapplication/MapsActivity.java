@@ -44,8 +44,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
+       // Intent i = getIntent();
+       // Bundle b = i.getExtras();
 
         tvR = (TextView) findViewById(R.id.tvResult);
         calander = Calendar.getInstance();
@@ -53,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         time = simpleDateFormat.format(calander.getTime());
 
-        tvR.setText("Me subí a la " + b.getInt("Linea") + " a las " + time + " en ");
+        tvR.setText("Me subí a la " + MainActivity.nombre + " a las " + time + " en ");
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
