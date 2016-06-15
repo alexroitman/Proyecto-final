@@ -4,9 +4,15 @@ package com.aexample.a41758511.myapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -20,7 +26,18 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.internal.spdy.FrameReader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -35,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+Button btnSubirme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +75,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        btnSubirme=(Button)findViewById(R.id.btSubir);
+        btnSubirme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (android.os.Build.VERSION.SDK_INT > 9) {
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+                }
+                String coord = sydney.toString();
+                String Hora = time;
+                String Linea =MainActivity.nombre ;
+
+
+
+                    try {
+                        OkHttpClient client = new OkHttpClient();
+                        String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
+                        JSONObject json = new JSONObject();
+                        json.put("LatLong",coord);
+                        json.put("IdLinea", Linea);
+                        json.put("Horasubida", Hora);
+
+
+
+                        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .post(body)
+                                .build();
+
+                        Response response = client.newCall(request).execute();
+                        Log.d("Response", response.body().string());
+                    } catch (IOException | JSONException e) {
+                        Log.d("Error", e.getMessage());
+                    }
+                Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+                    //Intent intent = new Intent(this, ListarEventos.class);
+                    //startActivity(intent);
+                }
+
+        });
     }
 
 
@@ -70,6 +129,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    public  LatLng sydney;
+    Handler han=new Handler();
+    Runnable run;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -77,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
 
         Ubicacion ub = new Ubicacion(MapsActivity.this);
-        LatLng sydney = ub.getLocation();
+      sydney = ub.getLocation();
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
@@ -87,7 +149,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomGesturesEnabled(false);
 
 
+run =new Runnable() {
+    @Override
+    public void run() {
 
+
+        han.postDelayed(run,180000);
+
+    }
+};
         //Polyline polyline=new Polyline();
         //mMap.addPolyline();
 

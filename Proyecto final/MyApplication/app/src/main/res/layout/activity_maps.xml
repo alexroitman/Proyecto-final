@@ -20,7 +20,7 @@ android:background="#c188afd8">
     android:layout_y="11dp" />
     <View
         android:id="@+id/colored_bar"
-        android:layout_width="match_parent"
+        android:layout_width="318dp"
         android:layout_height="100dp"
         android:background="@color/blank"
 
@@ -28,7 +28,7 @@ android:background="#c188afd8">
         android:layout_y="420dp"
         android:visibility="visible" />
     <Button
-        android:id="@+id/angry_btn"
+        android:id="@+id/btSubir"
 
         android:text="Subirme"
         android:textColor="#FFFFFF"
@@ -46,7 +46,7 @@ android:background="#c188afd8">
         android:visibility="visible" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="306dp"
         android:layout_height="100dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
