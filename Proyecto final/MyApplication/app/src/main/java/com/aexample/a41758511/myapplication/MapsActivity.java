@@ -40,12 +40,16 @@ import java.io.IOException;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     SimpleDateFormat simpleDateFormat;
     String time;
     Calendar calander;
     TextView tvR;
+    public String IdSubida;
+    Timer timer;
     private GoogleMap mMap;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -93,6 +97,7 @@ Button btnSubirme;
                         OkHttpClient client = new OkHttpClient();
                         String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
                         JSONObject json = new JSONObject();
+
                         json.put("LatLong",coord);
                         json.put("IdLinea", Linea);
                         json.put("Horasubida", Hora);
@@ -107,6 +112,7 @@ Button btnSubirme;
                                 .build();
 
                         Response response = client.newCall(request).execute();
+                        IdSubida= getIdSubida(response.body().string());
                         Log.d("Response", response.body().string());
                     } catch (IOException | JSONException e) {
                         Log.d("Error", e.getMessage());
@@ -117,6 +123,34 @@ Button btnSubirme;
                 }
 
         });
+       timer=new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
+                    Ubicacion ub = new Ubicacion(MapsActivity.this);
+                    JSONObject json = new JSONObject();
+                    json.put("UltimaUbicacion",ub.getLocation());
+                    json.put("IdSubida",IdSubida);
+                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(body)
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+                    Log.d("Response", response.body().string());
+                } catch (IOException | JSONException e) {
+                    Log.d("Error", e.getMessage());
+                }
+                //Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+
+            }
+        }, 2000);
     }
 
 
@@ -149,15 +183,6 @@ Button btnSubirme;
         mMap.getUiSettings().setZoomGesturesEnabled(false);
 
 
-run =new Runnable() {
-    @Override
-    public void run() {
-
-
-        han.postDelayed(run,180000);
-
-    }
-};
         //Polyline polyline=new Polyline();
         //mMap.addPolyline();
 
@@ -201,5 +226,15 @@ run =new Runnable() {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+    String getIdSubida(String json)
+    {
+        try {
+            JSONObject obj=new JSONObject(json);
+            return obj.getString("IdSubida");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new String("Error");
+        }
     }
 }

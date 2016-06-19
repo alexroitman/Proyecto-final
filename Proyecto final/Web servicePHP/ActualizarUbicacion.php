@@ -3,11 +3,13 @@ $con=mysqli_connect("localhost","u241352082_alexr","123456","u241352082_bdfin");
 if (mysqli_connect_errno()) {
    echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
-$UltimaUbicacion=$_GET["UltimaUbicacion"];
-$query ="UPDATE Subidas SET UltimaUbicacion='545;45' WHERE IdSubida='$UltimaUbicacion'";
+$string = file_get_contents('php://input'); 
+$objeto = json_decode($string, true);
+$UltimaUbicacion=$objeto["UltimaUbicacion"];
+$IdSubida=$objeto["IdSubida"];
+$query ="UPDATE Subidas SET UltimaUbicacion='$UltimaUbicacion' WHERE IdSubida='$IdSubida'";
 
-$objetos = array();
-$result = mysqli_query($con, $query);
+//$result = mysqli_query($con, $query);
 $stmt = $con->prepare($query);
 
 $stmt->execute();
