@@ -20,11 +20,11 @@ android:background="#c188afd8">
     android:layout_y="11dp" />
     <View
         android:id="@+id/colored_bar"
-        android:layout_width="318dp"
+        android:layout_width="304dp"
         android:layout_height="100dp"
         android:background="@color/blank"
 
-        android:layout_x="0dp"
+        android:layout_x="09dp"
         android:layout_y="420dp"
         android:visibility="visible" />
     <Button
@@ -46,13 +46,13 @@ android:background="#c188afd8">
         android:visibility="visible" />
 
     <TextView
-        android:layout_width="306dp"
+        android:layout_width="295dp"
         android:layout_height="100dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
         android:id="@+id/tvResult"
         android:layout_x="8dp"
-        android:layout_y="418dp"
+        android:layout_y="420dp"
         android:textSize="24dp"
         android:visibility="visible" />
 </AbsoluteLayout>
