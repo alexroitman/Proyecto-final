@@ -49,7 +49,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Calendar calander;
     TextView tvR;
     public String IdSubida;
-    Timer timer;
+     Handler handler;
+     Runnable runnableCode;
+
     private GoogleMap mMap;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -123,14 +125,17 @@ Button btnSubirme;
                 }
 
         });
-       timer=new Timer();
 
-        timer.schedule(new TimerTask() {
+
+// Create the Handler object (on the main thread by default)
+      handler=new Handler();
+// Define the code block to be executed
+     runnableCode = new Runnable() {
             @Override
             public void run() {
                 try {
                     OkHttpClient client = new OkHttpClient();
-                    String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
+                    String url ="http://bdalex.hol.es/bd/ActualizarUbicacion.php";
                     Ubicacion ub = new Ubicacion(MapsActivity.this);
                     JSONObject json = new JSONObject();
                     json.put("UltimaUbicacion",ub.getLocation());
@@ -147,10 +152,14 @@ Button btnSubirme;
                 } catch (IOException | JSONException e) {
                     Log.d("Error", e.getMessage());
                 }
-                //Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
-
+                Log.d("Handlers", "Called on main thread");
+                // Repeat this the same runnable code block again another 2 seconds
+                handler.postDelayed(runnableCode, 2000);
             }
-        }, 2000);
+        };
+// Start the initial runnable task by posting through the handler
+        handler.post(runnableCode);
+
     }
 
 
