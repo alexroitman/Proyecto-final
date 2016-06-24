@@ -33,6 +33,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.spdy.FrameReader;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -176,6 +177,7 @@ Button btnSubirme;
     public  LatLng sydney;
     Handler han=new Handler();
     Runnable run;
+    private OkHttpClient client1 = new OkHttpClient();
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -184,6 +186,20 @@ Button btnSubirme;
 
         Ubicacion ub = new Ubicacion(MapsActivity.this);
       sydney = ub.getLocation();
+        double solonum1= sydney.latitude;
+        double solonum2= sydney.longitude;
+        Request request1 = new Request.Builder()
+                .url("https://maps.googleapis.com/maps/api/geocode/json?latlng="+solonum1+","+solonum2)
+                .build();
+
+        try {
+            Response response1;
+            response1 = client1.newCall(request1).execute();
+            String google= response1.body().string();
+            ObtenerCalles(response1.body().string());
+        } catch (IOException e) {
+            Log.d("Error", e.getMessage());
+        }
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
@@ -247,4 +263,9 @@ Button btnSubirme;
             return new String("Error");
         }
     }
-}
+
+
+    private void ObtenerCalles(String json) {
+
+    }
+    }

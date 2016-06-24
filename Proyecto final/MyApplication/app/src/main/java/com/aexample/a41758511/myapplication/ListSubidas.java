@@ -12,5 +12,6 @@ ListView lv;
         setContentView(R.layout.activity_list_subidas);
         lv=(ListView) findViewById(R.id.listView);
         new SubidasTask(getApplicationContext(),lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
+
     }
 }

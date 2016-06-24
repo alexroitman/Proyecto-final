@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public static List<SocialNetwork> lislin = new ArrayList<>();
     public static Spinner spinner;
     public static SocialNetworkSpinnerAdapter adapter;
+    Button btnSubidas;
 Button btn;
     public static Context ct;
     @Override
@@ -57,6 +58,7 @@ Button btn;
         }
         adapter = new SocialNetworkSpinnerAdapter(getApplicationContext(),lislin);
         spinner.setAdapter(adapter);
+        btnSubidas=(Button) findViewById(R.id.button2);
         /*/
         items.add(new SocialNetwork("Seleccione una linea",R.drawable.ic_play_light));
         items.add(new SocialNetwork("Linea 15", R.drawable.a15));
@@ -92,7 +94,14 @@ btn=(Button) findViewById(R.id.button);
                 startActivity(i);
             }
         });
+btnSubidas.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Intent i=new Intent(MainActivity.this,ListSubidas.class);
 
+        startActivity(i);
+    }
+});
 
 
 

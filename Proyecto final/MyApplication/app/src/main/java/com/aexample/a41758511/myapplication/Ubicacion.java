@@ -5,7 +5,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -36,9 +35,7 @@ getLocation();
          Location loc=locationManager.getLastKnownLocation(provedor);
          if(loc!=null)
          {
-             StringBuilder builder=new StringBuilder();
-             builder.append("Latitude: ").append(loc.getLatitude())
-             .append(" Longitud : ").append(loc.getLongitude());
+
              yo=new LatLng(loc.getLatitude(),loc.getLongitude());
 
          }
