@@ -48,7 +48,7 @@ Button btn;
         List<SocialNetwork> items = new ArrayList<SocialNetwork>(22);
 
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-    new ProgressTask(MainActivity.this,spinner).execute("http://bdalex.hol.es/bd/listarlineas.php");
+        new ProgressTask(MainActivity.this,spinner).execute("http://bdalex.hol.es/bd/listarlineas.php");
         //ct=getApplicationContext();
         try {
             Thread.sleep(500);

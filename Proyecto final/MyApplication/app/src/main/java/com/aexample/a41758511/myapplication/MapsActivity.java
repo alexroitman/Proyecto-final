@@ -90,7 +90,10 @@ Button btnSubirme;
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
                 }
-                String coord = sydney.toString();
+                Ubicacion ub = new Ubicacion(MapsActivity.this);
+                sydney = ub.getLocation();
+                double solonum1= sydney.latitude;
+                double solonum2= sydney.longitude;
                 String Hora = time;
                 String Linea =MainActivity.nombre ;
 
@@ -101,7 +104,7 @@ Button btnSubirme;
                         String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
                         JSONObject json = new JSONObject();
 
-                        json.put("LatLong",coord);
+                        json.put("LatLong",solonum1+","+solonum2);
                         json.put("IdLinea", Linea);
                         json.put("Horasubida", Hora);
 
@@ -123,7 +126,7 @@ Button btnSubirme;
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(this, ListarEventos.class);
                     //startActivity(intent);
-                handler=new Handler();
+               /* handler=new Handler();
 // Define the code block to be executed
                 runnableCode = new Runnable() {
                     @Override
@@ -148,19 +151,19 @@ Button btnSubirme;
                             Log.d("Error", e.getMessage());
                         }
                         Log.d("Handlers", "Called on main thread");
-                        // Repeat this the same runnable code block again another 2 seconds
+
                         handler.postDelayed(runnableCode, 60000);
                     }
                 };
-// Start the initial runnable task by posting through the handler
-                handler.post(runnableCode);
+
+                handler.post(runnableCode);*/
 
             }
 
         });
 
 
-// Create the Handler object (on the main thread by default)
+
 
     }
 
@@ -188,7 +191,7 @@ Button btnSubirme;
       sydney = ub.getLocation();
         double solonum1= sydney.latitude;
         double solonum2= sydney.longitude;
-        Request request1 = new Request.Builder()
+       /* Request request1 = new Request.Builder()
                 .url("https://maps.googleapis.com/maps/api/geocode/json?latlng="+solonum1+","+solonum2)
                 .build();
 
@@ -199,7 +202,7 @@ Button btnSubirme;
             ObtenerCalles(response1.body().string());
         } catch (IOException e) {
             Log.d("Error", e.getMessage());
-        }
+        }*/
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
