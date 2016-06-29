@@ -25,12 +25,17 @@ import java.util.List;
 
 public class ListSubidas extends AppCompatActivity {
 public static ListView lv;
+    public static List<Subidas> lisSub = new ArrayList<>();
+
+    public static ListViewAdapter lAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_subidas);
         lv = (ListView) findViewById(R.id.lvSubidas);
         new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
+
+
     }
 }
 class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
@@ -55,14 +60,36 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
     List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
 
     Spinner spinner ;
-    protected void onPostExecute(  List<SocialNetwork> lislin) {
+    public static String[] titulo;
+    public static Integer[] Imagenes;
+    protected void onPostExecute(  List<Subidas> lislin) {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        for (SocialNetwork esteSocial:lislin) {
+        int i=0;
+        titulo = new String[lislin.size()];
+        Imagenes = new Integer[lislin.size()];
+        for (Subidas estaSubida:lislin) {
 
-            MainActivity.lislin.add(esteSocial);
+            ListSubidas.lisSub.add(estaSubida);
+            titulo[i]="Me subi a las "+estaSubida.Hora+" en"+ estaSubida.UbicacionSubida;
+            Resources res = context.getResources();
+
+            Integer ic = res.getIdentifier(estaSubida.IdLinea, "drawable", context.getApplicationContext().getPackageName());
+            try {
+                Imagenes[i]=ic;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            i++;
+
+
         }
+        ListSubidas.lAdapter = new ListViewAdapter(context,SubidasTask.titulo,SubidasTask.Imagenes);
+        lv.setAdapter(ListSubidas.lAdapter);
         MainActivity.adapter.notifyDataSetChanged();
 
         Log.d("Alex","error");
@@ -92,6 +119,7 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
         return lin;
     }
     public static List<Subidas> lin;
+    public static String[] textos=new String[]{};
     List<Subidas> parsearResultado(String JSONstr) throws JSONException {
         List<Subidas> eventos = new ArrayList<>();
         JSONArray jsonEventos = new JSONArray(JSONstr);
@@ -105,7 +133,6 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
             sub.IdLinea= jsonResultado.getString("IdLinea");
             sub.Hora= jsonResultado.getString("Horasubida");
             sub.UltimaUbicacion = jsonResultado.getString("UltimaUbicacion");
-
 
             lin.add(sub);
 

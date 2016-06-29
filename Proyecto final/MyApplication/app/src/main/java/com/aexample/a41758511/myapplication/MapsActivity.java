@@ -4,6 +4,7 @@ package com.aexample.a41758511.myapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -70,7 +71,7 @@ Button btnSubirme;
         mapFragment.getMapAsync(this);
        // Intent i = getIntent();
        // Bundle b = i.getExtras();
-
+new ObtenerCallesTask().execute();
         tvR = (TextView) findViewById(R.id.tvResult);
         calander = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -187,22 +188,7 @@ Button btnSubirme;
 
         // Add a marker in Sydney and move the camera
 
-        Ubicacion ub = new Ubicacion(MapsActivity.this);
-      sydney = ub.getLocation();
-        double solonum1= sydney.latitude;
-        double solonum2= sydney.longitude;
-       /* Request request1 = new Request.Builder()
-                .url("https://maps.googleapis.com/maps/api/geocode/json?latlng="+solonum1+","+solonum2)
-                .build();
 
-        try {
-            Response response1;
-            response1 = client1.newCall(request1).execute();
-            String google= response1.body().string();
-            ObtenerCalles(response1.body().string());
-        } catch (IOException e) {
-            Log.d("Error", e.getMessage());
-        }*/
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
@@ -270,5 +256,28 @@ Button btnSubirme;
 
     private void ObtenerCalles(String json) {
 
+    }
+    public static class ObtenerCallesTask extends AsyncTask<Void,Void,Void>
+    {OkHttpClient cli=new OkHttpClient();
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Ubicacion ub = new Ubicacion(MainActivity.ct);
+            LatLng pos = ub.getLocation();
+            double solonum1= pos.latitude;
+            double solonum2= pos.longitude;
+            Request request1 = new Request.Builder()
+                    .url("https://maps.googleapis.com/maps/api/geocode/json?latlng="+solonum1+","+solonum2)
+                    .build();
+
+            try {
+                Response response1;
+                response1 = cli.newCall(request1).execute();
+                String google= response1.body().string();
+                //ObtenerCalles(response1.body().string());
+            } catch (IOException e) {
+                Log.d("Error", e.getMessage());
+            }
+            return null;
+        }
     }
     }
