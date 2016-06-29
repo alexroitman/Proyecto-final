@@ -1,23 +1,27 @@
 package com.aexample.a41758511.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aexample.a41758511.myapplication.R;
 
+import java.util.List;
+
 public class ListViewAdapter extends BaseAdapter {
     // Declare Variables
     Context context;
-    String[] titulos;
-    Integer[] imagenes;
+    List<String> titulos;
+    List<Integer> imagenes;
     LayoutInflater inflater;
 
-    public ListViewAdapter(Context context, String[] titulos, Integer[] imagenes) {
+    public ListViewAdapter(Context context, List<String> titulos, List<Integer> imagenes) {
         this.context = context;
         this.titulos = titulos;
         this.imagenes = imagenes;
@@ -25,7 +29,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return titulos.length;
+        return titulos.size();
     }
 
     @Override
@@ -54,8 +58,8 @@ public class ListViewAdapter extends BaseAdapter {
         imgImg = (ImageView) itemView.findViewById(R.id.list_row_image);
 
         // Capture position and set to the TextViews
-        txtTitle.setText(titulos[position]);
-        imgImg.setImageResource(imagenes[position]);
+        txtTitle.setText(titulos.get(position));
+        imgImg.setImageResource(imagenes.get(position));
 
         return itemView;
     }

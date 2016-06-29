@@ -25,16 +25,21 @@ import java.util.List;
 
 public class ListSubidas extends AppCompatActivity {
 public static ListView lv;
-    public static List<Subidas> lisSub = new ArrayList<>();
 
+    public static List<Subidas> lisSub = new ArrayList<>();
+    public static ArrayAdapter<Subidas> ad;
     public static ListViewAdapter lAdapter;
+    public static Context ctxSub;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_subidas);
         lv = (ListView) findViewById(R.id.lvSubidas);
         new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
-
+       // ad=new ArrayAdapter<Subidas>(this,R.layout.activity_list_row,lisSub);
+        ctxSub=getApplicationContext();
+        lv.setAdapter(ad);
 
     }
 }
@@ -60,24 +65,23 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
     List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
 
     Spinner spinner ;
-    public static String[] titulo;
-    public static Integer[] Imagenes;
+    public static List<String> titulo= new ArrayList<>();
+    public static List<Integer> Imagenes= new ArrayList<>();
     protected void onPostExecute(  List<Subidas> lislin) {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
         int i=0;
-        titulo = new String[lislin.size()];
-        Imagenes = new Integer[lislin.size()];
+
         for (Subidas estaSubida:lislin) {
 
             ListSubidas.lisSub.add(estaSubida);
-            titulo[i]="Me subi a las "+estaSubida.Hora+" en"+ estaSubida.UbicacionSubida;
+            titulo.add("Me subi a las "+estaSubida.Hora+" en"+ estaSubida.UbicacionSubida);
             Resources res = context.getResources();
 
             Integer ic = res.getIdentifier(estaSubida.IdLinea, "drawable", context.getApplicationContext().getPackageName());
             try {
-                Imagenes[i]=ic;
+                Imagenes.add(ic);
             }
             catch (Exception ex)
             {
@@ -88,9 +92,9 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
 
 
         }
-        ListSubidas.lAdapter = new ListViewAdapter(context,SubidasTask.titulo,SubidasTask.Imagenes);
-        lv.setAdapter(ListSubidas.lAdapter);
-        MainActivity.adapter.notifyDataSetChanged();
+
+        ListSubidas.lAdapter = new ListViewAdapter(ListSubidas.ctxSub,SubidasTask.titulo,SubidasTask.Imagenes);
+        ListSubidas.lAdapter.notifyDataSetChanged();
 
         Log.d("Alex","error");
 //        spinner = (Spinner) spinner.findViewById(R.id.spinner);
