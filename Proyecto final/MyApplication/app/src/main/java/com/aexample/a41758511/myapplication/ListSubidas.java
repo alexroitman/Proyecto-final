@@ -1,5 +1,6 @@
 package com.aexample.a41758511.myapplication;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,10 +27,11 @@ import java.util.List;
 public class ListSubidas extends AppCompatActivity {
 public static ListView lv;
 
-    public static List<Subidas> lisSub = new ArrayList<>();
+    public static ArrayList<Subidas> lisSub = new ArrayList<>();
     public static ArrayAdapter<Subidas> ad;
     public static ListViewAdapter lAdapter;
     public static Context ctxSub;
+    public static Activity act;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,7 +42,7 @@ public static ListView lv;
        // ad=new ArrayAdapter<Subidas>(this,R.layout.activity_list_row,lisSub);
         ctxSub=getApplicationContext();
         lv.setAdapter(ad);
-
+act=this;
     }
 }
 class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
@@ -67,7 +69,7 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
     Spinner spinner ;
     public static List<String> titulo= new ArrayList<>();
     public static List<Integer> Imagenes= new ArrayList<>();
-    protected void onPostExecute(  List<Subidas> lislin) {
+    protected void onPostExecute(  ArrayList<Subidas> lislin) {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -75,11 +77,11 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
 
         for (Subidas estaSubida:lislin) {
 
-            ListSubidas.lisSub.add(estaSubida);
+
             titulo.add("Me subi a las "+estaSubida.Hora+" en"+ estaSubida.UbicacionSubida);
             Resources res = context.getResources();
 
-            Integer ic = res.getIdentifier(estaSubida.IdLinea, "drawable", context.getApplicationContext().getPackageName());
+            Integer ic = res.getIdentifier(estaSubida.IdLinea.toString(), "drawable", context.getApplicationContext().getPackageName());
             try {
                 Imagenes.add(ic);
             }
@@ -89,11 +91,12 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
             }
 
             i++;
-
+            ListSubidas.lisSub.add(estaSubida);
 
         }
 
-        ListSubidas.lAdapter = new ListViewAdapter(ListSubidas.ctxSub,SubidasTask.titulo,SubidasTask.Imagenes);
+        ListSubidas.lAdapter = new ListViewAdapter(ListSubidas.act,ListSubidas.lisSub);
+
         ListSubidas.lAdapter.notifyDataSetChanged();
 
         Log.d("Alex","error");
@@ -134,7 +137,7 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
             Subidas sub=new Subidas();
             sub.IdSubida= jsonResultado.getString("IdSubida");
             sub.UbicacionSubida= jsonResultado.getString("LatLong");
-            sub.IdLinea= jsonResultado.getString("IdLinea");
+            sub.IdLinea= jsonResultado.getInt("IdLinea");
             sub.Hora= jsonResultado.getString("Horasubida");
             sub.UltimaUbicacion = jsonResultado.getString("UltimaUbicacion");
 

@@ -257,28 +257,29 @@ Button btnSubirme;
     private void ObtenerCalles(String json) {
 
     }
-    public static class ObtenerCallesTask extends AsyncTask<Void,Void,Void>
-    {
-        OkHttpClient cli=new OkHttpClient();
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Ubicacion ub = new Ubicacion(MainActivity.ct);
-            LatLng pos = ub.getLocation();
-            double solonum1= pos.latitude;
-            double solonum2= pos.longitude;
-            Request request1 = new Request.Builder()
-                    .url("https://maps.googleapis.com/maps/api/geocode/json?latlng="+solonum1+","+solonum2)
-                    .build();
 
-            try {
-                Response response1;
-                response1 = cli.newCall(request1).execute();
-                String google= response1.body().string();
-                //ObtenerCalles(response1.body().string());
-            } catch (IOException e) {
-                Log.d("Error", e.getMessage());
-            }
-            return null;
+    }
+class ObtenerCallesTask extends AsyncTask<Void,Void,Void>
+{
+    OkHttpClient cli=new OkHttpClient();
+    @Override
+    protected Void doInBackground(Void... voids) {
+        Ubicacion ub = new Ubicacion(MainActivity.ct);
+        LatLng pos = ub.getLocation();
+        double solonum1= pos.latitude;
+        double solonum2= pos.longitude;
+        Request request1 = new Request.Builder()
+                .url("https://maps.googleapis.com/maps/api/geocode/json?latlng="+solonum1+","+solonum2)
+                .build();
+
+        try {
+            Response response1;
+            response1 = cli.newCall(request1).execute();
+            String google= response1.body().string();
+            //ObtenerCalles(response1.body().string());
+        } catch (IOException e) {
+            Log.d("Error", e.getMessage());
         }
+        return null;
     }
-    }
+}
