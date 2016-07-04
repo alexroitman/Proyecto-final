@@ -3,6 +3,7 @@ package com.aexample.a41758511.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,21 @@ import com.aexample.a41758511.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
-/*
-public class ListViewAdapter extends BaseAdapter {
+
+/*public class ListViewAdapter extends BaseAdapter {
     // Declare Variables
     Context context;
     List<String> titulos;
     List<Integer> imagenes;
     LayoutInflater inflater;
 
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return super.getDropDownView(position, convertView, parent);
+    }
+
     public ListViewAdapter(Context context, List<String> titulos, List<Integer> imagenes) {
+        super();
         this.context = context;
         this.titulos = titulos;
         this.imagenes = imagenes;
@@ -43,7 +50,7 @@ public class ListViewAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
-
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Declare Variables
@@ -65,7 +72,8 @@ public class ListViewAdapter extends BaseAdapter {
 
         return itemView;
     }
-}*/public class ListViewAdapter extends BaseAdapter{
+}*/
+public class ListViewAdapter extends BaseAdapter{
 
     protected Activity activity;
     //ARRAYLIST CON TODOS LOS ITEMS
@@ -112,7 +120,10 @@ public class ListViewAdapter extends BaseAdapter {
         Subidas dir = items.get(position);
         //RELLENAMOS LA IMAGEN Y EL TEXTO
         ImageView foto = (ImageView) v.findViewById(R.id.list_row_image);
-        foto.setImageResource(dir.getImagen());
+        Resources res = ListSubidas.ctxSub.getResources();
+        Integer ic = res.getIdentifier("a"+dir.IdLinea.toString(), "drawable", ListSubidas.ctxSub.getApplicationContext().getPackageName());
+
+        foto.setImageResource(ic);
         TextView nombre = (TextView) v.findViewById(R.id.list_row_title);
         nombre.setText(dir.getTexto());
 

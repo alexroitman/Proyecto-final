@@ -38,10 +38,11 @@ public static ListView lv;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_subidas);
         lv = (ListView) findViewById(R.id.lvSubidas);
+
         new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
        // ad=new ArrayAdapter<Subidas>(this,R.layout.activity_list_row,lisSub);
         ctxSub=getApplicationContext();
-        lv.setAdapter(ad);
+
 act=this;
     }
 }
@@ -69,18 +70,18 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
     Spinner spinner ;
     public static List<String> titulo= new ArrayList<>();
     public static List<Integer> Imagenes= new ArrayList<>();
-    protected void onPostExecute(  ArrayList<Subidas> lislin) {
+
+    @Override
+    protected void onPostExecute(List<Subidas> subidases) {
+        super.onPostExecute(subidases);
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
         int i=0;
 
-        for (Subidas estaSubida:lislin) {
-
-
+        for (Subidas estaSubida:subidases) {
             titulo.add("Me subi a las "+estaSubida.Hora+" en"+ estaSubida.UbicacionSubida);
             Resources res = context.getResources();
-
             Integer ic = res.getIdentifier(estaSubida.IdLinea.toString(), "drawable", context.getApplicationContext().getPackageName());
             try {
                 Imagenes.add(ic);
@@ -97,15 +98,13 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
 
         ListSubidas.lAdapter = new ListViewAdapter(ListSubidas.act,ListSubidas.lisSub);
 
-        ListSubidas.lAdapter.notifyDataSetChanged();
+        ListSubidas.lv.setAdapter(ListSubidas.lAdapter);
+
 
         Log.d("Alex","error");
-//        spinner = (Spinner) spinner.findViewById(R.id.spinner);
-        //    spinner.setAdapter(new SocialNetworkSpinnerAdapter(MainActivity.ct,lislin));
-        //lv = getListView();
-
-
     }
+
+
     private OkHttpClient client = new OkHttpClient();
 
     @Override
@@ -140,6 +139,7 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
             sub.IdLinea= jsonResultado.getInt("IdLinea");
             sub.Hora= jsonResultado.getString("Horasubida");
             sub.UltimaUbicacion = jsonResultado.getString("UltimaUbicacion");
+            sub.Calle = jsonResultado.getString("Calle");
 
             lin.add(sub);
 

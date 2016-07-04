@@ -85,7 +85,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     json.put("LatLong",solonum1+","+solonum2);
                     json.put("IdLinea", Linea);
                     json.put("Horasubida", Hora);
-
+                    json.put("Calle", ObtenerCallesTask.callepublica);
 
 
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
@@ -158,7 +158,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         Ubicacion ub = new Ubicacion(Mapa.this);
         sydney = ub.getLocation();
         String todojunto=sydney.latitude+","+sydney.longitude;
-    //    new ObtenerCallesTask().execute(todojunto);
+        new ObtenerCallesTask().execute(todojunto);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
@@ -191,10 +191,10 @@ class ObtenerCallesTask extends AsyncTask<String,Void,String> {
         callepublica=s;
         Mapa.tvR.setText(Mapa.tvR.getText()+" "+callepublica);
     }
-
+    public static String result="";
     @Override
     protected String doInBackground(String... voids) {
-String result="";
+
         Request request1 = new Request.Builder()
                 .url("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + voids[0])
                 .build();

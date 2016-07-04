@@ -11,6 +11,7 @@ public class Subidas {
     Integer IdLinea;
     String UbicacionSubida;
     String UltimaUbicacion;
+    String Calle;
     public Subidas(String texto,Integer img) {
         super();
         this.IdSubida =texto;
@@ -29,7 +30,7 @@ public class Subidas {
         this.IdLinea = imagen;
     }
     public String getTexto() {
-        return "Hay un"+IdLinea+" en "+UltimaUbicacion;
+        return "Hay un "+IdLinea+" en "+Calle+ " a las "+Hora+" en" ;
     }
 
     public String getId() {
