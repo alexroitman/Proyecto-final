@@ -1,9 +1,5 @@
-
 package com.aexample.a41758511.myapplication;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -15,52 +11,40 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-import com.squareup.okhttp.internal.spdy.FrameReader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     SimpleDateFormat simpleDateFormat;
     String time;
     Calendar calander;
-    TextView tvR;
+    public static TextView tvR;
     public String IdSubida;
-     Handler handler;
-     Runnable runnableCode;
+    Handler handler;
+    Runnable runnableCode;
+    Button btnSubirme;
 
     private GoogleMap mMap;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-Button btnSubirme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +53,6 @@ Button btnSubirme;
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-       // Intent i = getIntent();
-       // Bundle b = i.getExtras();
-       // new ObtenerCallesTask().execute();
         tvR = (TextView) findViewById(R.id.tvResult);
         calander = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -79,10 +60,6 @@ Button btnSubirme;
         time = simpleDateFormat.format(calander.getTime());
 
         tvR.setText("Me subí a la " + MainActivity.nombre + " a las " + time + " en ");
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         btnSubirme=(Button)findViewById(R.id.btSubir);
         btnSubirme.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +68,7 @@ Button btnSubirme;
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
                 }
-                Ubicacion ub = new Ubicacion(MapsActivity.this);
+                Ubicacion ub = new Ubicacion(Mapa.this);
                 sydney = ub.getLocation();
                 double solonum1= sydney.latitude;
                 double solonum2= sydney.longitude;
@@ -100,33 +77,34 @@ Button btnSubirme;
 
 
 
-                    try {
-                        OkHttpClient client = new OkHttpClient();
-                        String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
-                        JSONObject json = new JSONObject();
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
+                    JSONObject json = new JSONObject();
 
-                        json.put("LatLong",solonum1+","+solonum2);
-                        json.put("IdLinea", Linea);
-                        json.put("Horasubida", Hora);
+                    json.put("LatLong",solonum1+","+solonum2);
+                    json.put("IdLinea", Linea);
+                    json.put("Horasubida", Hora);
 
 
 
-                        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
-                        Request request = new Request.Builder()
-                                .url(url)
-                                .post(body)
-                                .build();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(body)
+                            .build();
 
-                        Response response = client.newCall(request).execute();
-                        IdSubida= getIdSubida(response.body().string());
-                        Log.d("Response", response.body().string());
-                    } catch (IOException | JSONException e) {
-                        Log.d("Error", e.getMessage());
-                    }
+                    Response response = client.newCall(request).execute();
+
+                    IdSubida=response.body().string();
+                    Log.d("Response", response.body().string());
+                } catch (IOException | JSONException e) {
+                    Log.d("Error", e.getMessage());
+                }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
-                    //Intent intent = new Intent(this, ListarEventos.class);
-                    //startActivity(intent);
+                //Intent intent = new Intent(this, ListarEventos.class);
+                //startActivity(intent);
                /* handler=new Handler();
 // Define the code block to be executed
                 runnableCode = new Runnable() {
@@ -163,32 +141,24 @@ Button btnSubirme;
 
         });
 
-
-
-
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
     public  LatLng sydney;
     Handler han=new Handler();
     Runnable run;
+
     private OkHttpClient client1 = new OkHttpClient();
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-
-
+        Ubicacion ub = new Ubicacion(Mapa.this);
+        sydney = ub.getLocation();
+        String todojunto=sydney.latitude+","+sydney.longitude;
+    //    new ObtenerCallesTask().execute(todojunto);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
@@ -198,49 +168,6 @@ Button btnSubirme;
         mMap.getUiSettings().setZoomGesturesEnabled(false);
 
 
-        //Polyline polyline=new Polyline();
-        //mMap.addPolyline();
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Maps Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.aexample.a41758511.myapplication/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Maps Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.aexample.a41758511.myapplication/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
     String getIdSubida(String json)
     {
@@ -252,10 +179,48 @@ Button btnSubirme;
             return new String("Error");
         }
     }
+}
 
+class ObtenerCallesTask extends AsyncTask<String,Void,String> {
+    public static String callepublica="";
+    private OkHttpClient cli = new OkHttpClient();
 
-    private void ObtenerCalles(String json) {
-
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        callepublica=s;
+        Mapa.tvR.setText(Mapa.tvR.getText()+" "+callepublica);
     }
 
+    @Override
+    protected String doInBackground(String... voids) {
+String result="";
+        Request request1 = new Request.Builder()
+                .url("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + voids[0])
+                .build();
+
+        try {
+            Response response1;
+            response1 = cli.newCall(request1).execute();
+            String google = response1.body().string();
+            result=ObtenerCalles(google);
+        } catch (IOException e) {
+            Log.d("Error", e.getMessage());
+        }
+        return result;
+
     }
+    String ObtenerCalles(String json)
+    {
+        String calle="";
+        try {
+            JSONObject obj=new JSONObject(json);
+            JSONArray res=obj.getJSONArray("results");
+            JSONObject form=res.getJSONObject(0);
+            calle=form.getString("formatted_address");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return calle;
+    }
+}

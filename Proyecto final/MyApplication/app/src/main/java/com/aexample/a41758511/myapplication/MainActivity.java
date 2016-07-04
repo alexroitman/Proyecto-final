@@ -87,7 +87,7 @@ btn=(Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(MainActivity.this,MapsActivity.class);
+                Intent i=new Intent(MainActivity.this,Mapa.class);
            //     Bundle b=new Bundle();
             //    b.putInt("Linea",nombre);
             //    i.putExtras(b);
