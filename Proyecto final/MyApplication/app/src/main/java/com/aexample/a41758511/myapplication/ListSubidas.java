@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class ListSubidas extends AppCompatActivity {
 public static ListView lv;
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
     public static ArrayList<Subidas> lisSub = new ArrayList<>();
     public static ArrayAdapter<Subidas> ad;
     public static ListViewAdapter lAdapter;
@@ -59,7 +60,15 @@ public static ListView lv;
                 startActivity(I);
             }
         });
-act=this;
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                                     @Override
+                                                     public void onRefresh() {
+                                                         new SubidasTask(act, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
+                                                         mSwipeRefreshLayout.setRefreshing(false);
+                                                     }
+                                                 });
+            act=this;
     }
 }
 class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
