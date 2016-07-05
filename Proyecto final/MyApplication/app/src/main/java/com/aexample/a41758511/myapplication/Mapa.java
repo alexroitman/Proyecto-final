@@ -59,7 +59,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         time = simpleDateFormat.format(calander.getTime());
 
-        tvR.setText("Me subí a la " + MainActivity.nombre + " a las " + time + " en ");
+        tvR.setText("Me subí al " + MainActivity.nombre + " a las " + time + " en ");
         btnSubirme=(Button)findViewById(R.id.btSubir);
         btnSubirme.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +188,7 @@ class ObtenerCallesTask extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        callepublica="";
         callepublica=s;
         Mapa.tvR.setText(Mapa.tvR.getText()+" "+callepublica);
     }

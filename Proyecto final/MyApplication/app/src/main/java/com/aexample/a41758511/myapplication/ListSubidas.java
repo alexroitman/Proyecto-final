@@ -78,7 +78,7 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
             dialog.dismiss();
         }
         int i=0;
-
+ListSubidas.lisSub.clear();
         for (Subidas estaSubida:subidases) {
             titulo.add("Me subi a las "+estaSubida.Hora+" en"+ estaSubida.UbicacionSubida);
             Resources res = context.getResources();
@@ -97,7 +97,6 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
         }
 
         ListSubidas.lAdapter = new ListViewAdapter(ListSubidas.act,ListSubidas.lisSub);
-
         ListSubidas.lv.setAdapter(ListSubidas.lAdapter);
 
 
