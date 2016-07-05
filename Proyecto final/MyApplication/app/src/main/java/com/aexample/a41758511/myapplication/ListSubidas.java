@@ -3,15 +3,19 @@ package com.aexample.a41758511.myapplication;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -32,6 +36,7 @@ public static ListView lv;
     public static ListViewAdapter lAdapter;
     public static Context ctxSub;
     public static Activity act;
+    public static LatLng ub;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,7 +47,18 @@ public static ListView lv;
         new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
        // ad=new ArrayAdapter<Subidas>(this,R.layout.activity_list_row,lisSub);
         ctxSub=getApplicationContext();
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String[] latLng = lisSub.get(position).UbicacionSubida.split(",");
+                double latitude = Double.parseDouble(latLng[0]);
+                double longitude = Double.parseDouble(latLng[1]);
 
+                ub=new LatLng(latitude, longitude);
+                Intent I=new Intent(ListSubidas.this,UbicacionUsuario.class);
+                startActivity(I);
+            }
+        });
 act=this;
     }
 }

@@ -54,7 +54,10 @@
         <activity android:name=".ListSubidas" />
         <activity
             android:name=".Mapa"
-            android:label="@string/title_activity_mapa"></activity>
+            android:label="@string/title_activity_mapa" />
+        <activity
+            android:name=".UbicacionUsuario"
+            android:label="@string/title_activity_ubicacion_usuario"></activity>
     </application>
 
 </manifest>
