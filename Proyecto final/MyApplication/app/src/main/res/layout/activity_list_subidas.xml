@@ -10,10 +10,20 @@
     tools:context="com.aexample.a41758511.myapplication.ListSubidas"
     android:background="#c188afd8">
 
+    <Spinner
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin"
+        android:layout_x="-3dp"
+        android:layout_y="142dp"
+        android:layout_alignParentTop="true"
+        android:spinnerMode="dropdown" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spin">
 
     <ListView
         android:layout_width="wrap_content"
@@ -22,4 +32,5 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>

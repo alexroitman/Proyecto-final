@@ -36,16 +36,46 @@ public static ListView lv;
     public static ArrayAdapter<Subidas> ad;
     public static ListViewAdapter lAdapter;
     public static Context ctxSub;
+    public static List<SocialNetwork> lislin1 = new ArrayList<>();
     public static Activity act;
     public static LatLng ub;
+    public String nombree;
+    public static SocialNetworkSpinnerAdapter adapter1;
+    Spinner spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_subidas);
         lv = (ListView) findViewById(R.id.lvSubidas);
+        spin=(Spinner) findViewById(R.id.spin);
+        new ProgressTaskList(ListSubidas.this,spin).execute("http://bdalex.hol.es/bd/listarlineas.php");
+        //ct=getApplicationContext();
+        try {
+            Thread.sleep(500);
+        }catch (Exception e){
 
-        new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
+
+        }
+        new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+MainActivity.nombre);
+
+
+
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                adapterView.setSelection(i);
+                nombree=((SocialNetwork) adapterView.getItemAtPosition(i)).getNombre();
+                new SubidasTask(getApplicationContext(), lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+nombree);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+                //nothing
+            }
+        });
+
        // ad=new ArrayAdapter<Subidas>(this,R.layout.activity_list_row,lisSub);
         ctxSub=getApplicationContext();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,11 +94,14 @@ public static ListView lv;
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
          @Override
          public void onRefresh() {
-             new SubidasTask(act, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
+             new SubidasTask(getApplicationContext(), lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+nombree);
              mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
          }
      });
             act=this;
+        adapter1 = new SocialNetworkSpinnerAdapter(getApplicationContext(),lislin1);
+        spin.setAdapter(adapter1);
+
     }
 }
 class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
@@ -86,8 +119,8 @@ class SubidasTask extends AsyncTask<String, Void,  List<Subidas>> {
     public Context context;
 
     protected void onPreExecute() {
-        this.dialog.setMessage("Cargando subidas, por favor espere");
-        this.dialog.show();
+     //   this.dialog.setMessage("Cargando subidas, por favor espere");
+     //   this.dialog.show();
     }
     ArrayAdapter<String> adapter;
     List<SocialNetwork> jsonlist = new ArrayList<SocialNetwork>();
@@ -134,7 +167,7 @@ ListSubidas.lisSub.clear();
     @Override
     protected List<Subidas> doInBackground(String... params) {
         String url = params[0];
-        url+=MainActivity.nombre;
+
         Request request = new Request.Builder()
                 .url(url)
                 .build();
