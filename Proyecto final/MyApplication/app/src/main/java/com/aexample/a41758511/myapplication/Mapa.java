@@ -1,5 +1,10 @@
 package com.aexample.a41758511.myapplication;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -104,6 +109,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     Log.d("Error", e.getMessage());
                 }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+
                 //Intent intent = new Intent(this, ListarEventos.class);
                 //startActivity(intent);
                /* handler=new Handler();

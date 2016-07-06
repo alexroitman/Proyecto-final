@@ -1,9 +1,14 @@
 package com.aexample.a41758511.myapplication;
 
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -41,10 +46,37 @@ Button btn;
     public static Context ct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         spinner=(Spinner)findViewById(R.id.spinner);
+        Intent intent = new Intent(getApplicationContext(), Bajarse.class);
+// use System.currentTimeMillis() to have a unique ID for the pending intent
+        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
 
+// build notification
+// the addAction re-use the same intent to keep the example short
+        Notification n  = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                    R.drawable.logoproyecto);
+            n = new Notification.Builder(getApplicationContext())
+                    .setContentTitle("Ya me subi")
+                    .setContentText("BAJARME")
+                    .setSmallIcon(R.drawable.logoproyecto)
+                    .setContentIntent(pIntent)
+                    .setAutoCancel(false)
+                    .setLargeIcon(icon)
+                    .addAction(R.drawable.logoproyecto, "Call", pIntent)
+
+                    .build();
+        }
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(0, n);
         List<SocialNetwork> items = new ArrayList<SocialNetwork>(22);
 
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));

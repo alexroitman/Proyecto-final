@@ -57,7 +57,8 @@
             android:label="@string/title_activity_mapa" />
         <activity
             android:name=".UbicacionUsuario"
-            android:label="@string/title_activity_ubicacion_usuario"></activity>
+            android:label="@string/title_activity_ubicacion_usuario" />
+        <activity android:name=".Bajarse"></activity>
     </application>
 
 </manifest>
