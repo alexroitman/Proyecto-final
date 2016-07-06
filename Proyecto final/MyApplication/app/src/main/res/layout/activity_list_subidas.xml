@@ -9,16 +9,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.aexample.a41758511.myapplication.ListSubidas"
     android:background="#c188afd8">
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lvSubidas"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

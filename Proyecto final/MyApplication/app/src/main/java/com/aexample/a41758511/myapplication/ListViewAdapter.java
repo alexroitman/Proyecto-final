@@ -122,7 +122,7 @@ public class ListViewAdapter extends BaseAdapter{
         ImageView foto = (ImageView) v.findViewById(R.id.list_row_image);
         Resources res = ListSubidas.ctxSub.getResources();
         Integer ic = res.getIdentifier("a"+dir.IdLinea.toString(), "drawable", ListSubidas.ctxSub.getApplicationContext().getPackageName());
-
+        ImageView ira = (ImageView) v.findViewById(R.id.imageView2);
         foto.setImageResource(ic);
         TextView nombre = (TextView) v.findViewById(R.id.list_row_title);
         nombre.setText(dir.getTexto());

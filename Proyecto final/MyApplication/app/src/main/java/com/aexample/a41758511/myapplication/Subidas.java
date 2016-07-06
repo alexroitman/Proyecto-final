@@ -30,7 +30,7 @@ public class Subidas {
         this.IdLinea = imagen;
     }
     public String getTexto() {
-        return "Hay un "+IdLinea+" en "+Calle+ " a las "+Hora+" en" ;
+        return "Hay un "+IdLinea+" en "+Calle+ " a las "+Hora ;
     }
 
     public String getId() {

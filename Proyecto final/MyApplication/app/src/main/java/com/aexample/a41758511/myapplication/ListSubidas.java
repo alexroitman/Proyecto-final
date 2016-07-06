@@ -31,7 +31,7 @@ import java.util.List;
 
 public class ListSubidas extends AppCompatActivity {
 public static ListView lv;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    public static SwipeRefreshLayout mSwipeRefreshLayout;
     public static ArrayList<Subidas> lisSub = new ArrayList<>();
     public static ArrayAdapter<Subidas> ad;
     public static ListViewAdapter lAdapter;
@@ -62,12 +62,12 @@ public static ListView lv;
         });
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                                     @Override
-                                                     public void onRefresh() {
-                                                         new SubidasTask(act, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
-                                                         mSwipeRefreshLayout.setRefreshing(false);
-                                                     }
-                                                 });
+         @Override
+         public void onRefresh() {
+             new SubidasTask(act, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea=");
+             mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
+         }
+     });
             act=this;
     }
 }
@@ -123,7 +123,7 @@ ListSubidas.lisSub.clear();
 
         ListSubidas.lAdapter = new ListViewAdapter(ListSubidas.act,ListSubidas.lisSub);
         ListSubidas.lv.setAdapter(ListSubidas.lAdapter);
-
+        ListSubidas.mSwipeRefreshLayout.setRefreshing(false);
 
         Log.d("Alex","error");
     }
