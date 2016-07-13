@@ -50,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String time;
     Calendar calander;
     TextView tvR;
-    public String IdSubida;
+    public static String IdSubida;
      Handler handler;
      Runnable runnableCode;
 

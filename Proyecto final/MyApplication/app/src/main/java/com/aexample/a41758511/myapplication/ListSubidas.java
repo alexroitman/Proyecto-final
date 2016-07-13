@@ -49,7 +49,7 @@ public static ListView lv;
         setContentView(R.layout.activity_list_subidas);
         lv = (ListView) findViewById(R.id.lvSubidas);
         spin=(Spinner) findViewById(R.id.spin);
-        new ProgressTaskList(ListSubidas.this,spin).execute("http://bdalex.hol.es/bd/listarlineas.php");
+        new ProgressTaskList(ListSubidas.this,spin).execute("http://yamesubi.azurewebsites.net/listarlineas.php");
         //ct=getApplicationContext();
         try {
             Thread.sleep(500);
@@ -57,7 +57,7 @@ public static ListView lv;
 
 
         }
-        new SubidasTask(this, lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+MainActivity.nombre);
+        new SubidasTask(this, lv).execute("http://yamesubi.azurewebsites.net/ListarSubidas.php?IdLinea="+MainActivity.nombre);
 
 
 
@@ -66,7 +66,7 @@ public static ListView lv;
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 adapterView.setSelection(i);
                 nombree=((SocialNetwork) adapterView.getItemAtPosition(i)).getNombre();
-                new SubidasTask(getApplicationContext(), lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+nombree);
+                new SubidasTask(getApplicationContext(), lv).execute("http://yamesubi.azurewebsites.net?IdLinea="+nombree);
 
             }
             @Override
@@ -94,7 +94,7 @@ public static ListView lv;
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
          @Override
          public void onRefresh() {
-             new SubidasTask(getApplicationContext(), lv).execute("http://bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+nombree);
+             new SubidasTask(getApplicationContext(), lv).execute("http://yamesubi.azurewebsites.net?IdLinea="+nombree);
              mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
          }
      });

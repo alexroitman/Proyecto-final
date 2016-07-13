@@ -59,6 +59,9 @@
             android:name=".UbicacionUsuario"
             android:label="@string/title_activity_ubicacion_usuario" />
         <activity android:name=".Bajarse"></activity>
+        <service
+            android:name=".Service"
+            android:exported="false"/>
     </application>
 
 </manifest>

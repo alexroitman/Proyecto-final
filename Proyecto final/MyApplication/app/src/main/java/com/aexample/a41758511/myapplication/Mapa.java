@@ -1,10 +1,15 @@
 package com.aexample.a41758511.myapplication;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -43,7 +48,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     String time;
     Calendar calander;
     public static TextView tvR;
-    public String IdSubida;
+    public static String IdSubida;
     Handler handler;
     Runnable runnableCode;
     Button btnSubirme;
@@ -85,7 +90,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                 try {
                     OkHttpClient client = new OkHttpClient();
-                    String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
+                    String url ="http://yamesubi.azurewebsites.net/AgregarSubida.php";
                     JSONObject json = new JSONObject();
 
                     json.put("LatLong",solonum1+","+solonum2);
@@ -103,12 +108,43 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                     Response response = client.newCall(request).execute();
                     String jsonId=response.body().string();
-                    IdSubida=jsonId;
+                    SharedPreferences.Editor editor = getSharedPreferences("Dic", MODE_PRIVATE).edit();
+                    editor.putString("IdSubida", jsonId.substring(0,jsonId.length()-2));
+                    editor.commit();
                     Log.d("Response", response.body().string());
                 } catch (IOException | JSONException e) {
                     Log.d("Error", e.getMessage());
                 }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+               Intent mServiceIntent = new Intent(getApplicationContext(), Service.class);
+             //   mServiceIntent.setData(Uri.parse(dataUrl));
+                Intent intent = new Intent(getApplicationContext(), Bajarse.class);
+// use System.currentTimeMillis() to have a unique ID for the pending intent
+                PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
+
+// build notification
+// the addAction re-use the same intent to keep the example short
+                Notification n  = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            R.drawable.logoproyecto);
+                    n = new Notification.Builder(getApplicationContext())
+                            .setContentTitle("Ya me subi")
+                            .setContentText("BAJARME")
+                            .setSmallIcon(R.drawable.logoproyecto)
+                            .setContentIntent(pIntent)
+                            .setAutoCancel(true)
+                            .setLargeIcon(icon)
+                            //.addAction(R.drawable.logoproyecto, "Call", pIntent)
+
+                            .build();
+                }
+
+
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                notificationManager.notify(0, n);
 
                 //Intent intent = new Intent(this, ListarEventos.class);
                 //startActivity(intent);
@@ -154,7 +190,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                  OkHttpClient client3 = new OkHttpClient();
                 try {
 
-                    String url ="http://bdalex.hol.es/bd/ActualizarUbicacion.php";
+                    String url ="http://yamesubi.azurewebsites.net/ActualizarUbicacion.php";
                     Ubicacion ub = new Ubicacion(Mapa.this);
                     LatLng syd=ub.getLocation();
                     double solonu= syd.latitude;

@@ -50,37 +50,11 @@ Button btn;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         spinner=(Spinner)findViewById(R.id.spinner);
-        Intent intent = new Intent(getApplicationContext(), Bajarse.class);
-// use System.currentTimeMillis() to have a unique ID for the pending intent
-        PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
 
-// build notification
-// the addAction re-use the same intent to keep the example short
-        Notification n  = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                    R.drawable.logoproyecto);
-            n = new Notification.Builder(getApplicationContext())
-                    .setContentTitle("Ya me subi")
-                    .setContentText("BAJARME")
-                    .setSmallIcon(R.drawable.logoproyecto)
-                    .setContentIntent(pIntent)
-                    .setAutoCancel(false)
-                    .setLargeIcon(icon)
-                    .addAction(R.drawable.logoproyecto, "Call", pIntent)
-
-                    .build();
-        }
-
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0, n);
         List<SocialNetwork> items = new ArrayList<SocialNetwork>(22);
 
         //   items.add(new SocialNetwork(getString(R.string.none), R.drawable.ninguno));
-        new ProgressTask(MainActivity.this,spinner).execute("http://bdalex.hol.es/bd/listarlineas.php");
+        new ProgressTask(MainActivity.this,spinner).execute("http://yamesubi.azurewebsites.net/listarlineas.php");
         //ct=getApplicationContext();
         try {
             Thread.sleep(500);
