@@ -49,7 +49,7 @@ public static ListView lv;
         setContentView(R.layout.activity_list_subidas);
         lv = (ListView) findViewById(R.id.lvSubidas);
         spin=(Spinner) findViewById(R.id.spin);
-        new ProgressTaskList(ListSubidas.this,spin).execute("http://yamesubi.azurewebsites.net/listarlineas.php");
+        new ProgressTaskList(ListSubidas.this,spin).execute("bdalex.hol.es/bd/listarlineas.php");
         //ct=getApplicationContext();
         try {
             Thread.sleep(500);
@@ -57,7 +57,7 @@ public static ListView lv;
 
 
         }
-        new SubidasTask(this, lv).execute("http://yamesubi.azurewebsites.net/ListarSubidas.php?IdLinea="+MainActivity.nombre);
+        new SubidasTask(this, lv).execute("bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+MainActivity.nombre);
 
 
 

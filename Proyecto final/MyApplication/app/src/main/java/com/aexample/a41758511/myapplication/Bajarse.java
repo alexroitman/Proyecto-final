@@ -35,7 +35,7 @@ public class Bajarse extends AppCompatActivity {
         setContentView(R.layout.activity_bajarse);
         OkHttpClient client = new OkHttpClient();
 
-            String url = "http://yamesubi.azurewebsites.net/EliminarSubida.php?Sub=" + Mapa.IdSubida;
+            String url = "bdalex.hol.es/bd/EliminarSubida.php?Sub=" + Mapa.IdSubida;
             Request request = new Request.Builder()
                     .url(url)
                     .build();

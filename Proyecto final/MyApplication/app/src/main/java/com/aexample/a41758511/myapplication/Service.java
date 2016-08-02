@@ -3,6 +3,7 @@ package com.aexample.a41758511.myapplication;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -27,46 +28,52 @@ public class Service extends IntentService {
     public Service(String name) {
         super(name);
     }
-
+    private final Handler mHandler = new Handler();
+    private Runnable mUpdateTimeTask;
     @Override
-    protected void onHandleIntent(Intent workIntent) {
-        SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
-        String dataString = workIntent.getDataString();
+    protected void onHandleIntent(final Intent workIntent) {
 
-        OkHttpClient client3 = new OkHttpClient();
-        try {
-            String time;
-            Calendar calander;
-            SimpleDateFormat simpleDateFormat;
-            String url ="http://yamesubi.azurewebsites.net/ActualizarUbicacion.php";
-            Ubicacion ub = new Ubicacion(this);
-            LatLng syd=ub.getLocation();
-            double solonu= syd.latitude;
-            double solonu1= syd.longitude;
-            JSONObject json = new JSONObject();
-            calander = Calendar.getInstance();
-            simpleDateFormat = new SimpleDateFormat("HH:mm");
-String id=prefs.getString("IdSubida","1");
-            time = simpleDateFormat.format(calander.getTime());
-            json.put("Hora",time);
-            json.put("UltimaUbicacion",solonu+","+solonu1);
-            json.put("IdSubida",id.substring(0,id.length()-2));
+        mUpdateTimeTask = new Runnable() {
+            public void run() {
+                SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
+                String dataString = workIntent.getDataString();
 
-            json.put("Calle",ObtenerCallesTask.callepublica);
-            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+                OkHttpClient client3 = new OkHttpClient();
+                try {
+                    String time;
+                    Calendar calander;
+                    SimpleDateFormat simpleDateFormat;
+                    String url = "bdalex.hol.es/bd/ActualizarUbicacion.php";
+                    Ubicacion ub = new Ubicacion(getBaseContext());
+                    LatLng syd = ub.getLocation();
+                    double solonu = syd.latitude;
+                    double solonu1 = syd.longitude;
+                    JSONObject json = new JSONObject();
+                    calander = Calendar.getInstance();
+                    simpleDateFormat = new SimpleDateFormat("HH:mm");
+                    String id = prefs.getString("IdSubida", "1");
+                    time = simpleDateFormat.format(calander.getTime());
+                    json.put("Hora", time);
+                    json.put("UltimaUbicacion", solonu + "," + solonu1);
+                    json.put("IdSubida", id.substring(0, id.length() - 2));
 
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(body)
-                    .build();
+                    json.put("Calle", ObtenerCallesTask.callepublica);
+                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
-            Response response = client3.newCall(request).execute();
-            Log.d("Response", response.body().string());
-        } catch (IOException | JSONException e) {
-            Log.d("Error", e.getMessage());
-        }
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(body)
+                            .build();
 
-
+                    Response response = client3.newCall(request).execute();
+                    Log.d("Response", response.body().string());
+                } catch (IOException | JSONException e) {
+                    Log.d("Error", e.getMessage());
+                }
+              }
+            };
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        mHandler.postDelayed(mUpdateTimeTask, 1000*60*2);
 
 
     }

@@ -90,9 +90,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                 try {
                     OkHttpClient client = new OkHttpClient();
-                    String url ="http://yamesubi.azurewebsites.net/AgregarSubida.php";
+                    //String url ="bdalex.hol.es/bd/AgregarSubida.php";
                     JSONObject json = new JSONObject();
-
+                    String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
                     json.put("LatLong",solonum1+","+solonum2);
                     json.put("IdLinea", Linea);
                     json.put("Horasubida", Hora);
@@ -116,8 +116,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     Log.d("Error", e.getMessage());
                 }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
-               Intent mServiceIntent = new Intent(getApplicationContext(), Service.class);
-             //   mServiceIntent.setData(Uri.parse(dataUrl));
+               Intent mServiceIntent = new Intent(getApplicationContext(), MyIntentService.class);
+                startService(mServiceIntent);
                 Intent intent = new Intent(getApplicationContext(), Bajarse.class);
 // use System.currentTimeMillis() to have a unique ID for the pending intent
                 PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
@@ -190,7 +190,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                  OkHttpClient client3 = new OkHttpClient();
                 try {
 
-                    String url ="http://yamesubi.azurewebsites.net/ActualizarUbicacion.php";
+                    String url ="bdalex.hol.es/bd/ActualizarUbicacion.php";
                     Ubicacion ub = new Ubicacion(Mapa.this);
                     LatLng syd=ub.getLocation();
                     double solonu= syd.latitude;

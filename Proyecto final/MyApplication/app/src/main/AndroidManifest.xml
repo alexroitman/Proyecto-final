@@ -58,10 +58,12 @@
         <activity
             android:name=".UbicacionUsuario"
             android:label="@string/title_activity_ubicacion_usuario" />
-        <activity android:name=".Bajarse"></activity>
+        <activity android:name=".Bajarse" />
+
+
         <service
-            android:name=".Service"
-            android:exported="false"/>
+            android:name=".MyIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>
