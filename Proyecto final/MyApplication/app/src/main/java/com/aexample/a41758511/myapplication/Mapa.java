@@ -55,9 +55,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     Runnable runnableCode;
     Button btnSubirme;
     Button btnActualizar;
-
+    public static AlarmManager alarmManager;
     private GoogleMap mMap;
-
+    public static PendingIntent pending;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,15 +119,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
 
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+               alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                 Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
-                PendingIntent pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
+                pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
 
-                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                         SystemClock.elapsedRealtime() +
-                                60000, pending);
+                                30000,30000, pending);
                 Intent intent = new Intent(getApplicationContext(), Bajarse.class);
+
 // use System.currentTimeMillis() to have a unique ID for the pending intent
                 PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
 

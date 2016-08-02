@@ -1,6 +1,7 @@
 package com.aexample.a41758511.myapplication;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,8 +35,8 @@ public class Bajarse extends AppCompatActivity {
 
         setContentView(R.layout.activity_bajarse);
         OkHttpClient client = new OkHttpClient();
-
-            String url = "bdalex.hol.es/bd/EliminarSubida.php?Sub=" + Mapa.IdSubida;
+        SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
+            String url = "http://www.bdalex.hol.es/bd/EliminarSubida.php?Sub=" + prefs.getString("IdSubida", "9");
             Request request = new Request.Builder()
                     .url(url)
                     .build();
@@ -45,7 +46,7 @@ public class Bajarse extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-
+Mapa.alarmManager.cancel(Mapa.pending);
             finish();
 
     }

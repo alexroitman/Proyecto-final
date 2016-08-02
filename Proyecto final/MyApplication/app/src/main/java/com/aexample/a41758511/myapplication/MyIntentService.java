@@ -14,6 +14,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,10 +28,10 @@ public class MyIntentService extends IntentService {
         super("MyIntentService");
     }
 
-
+int i=0;
         public static String IdSubida;
 
-
+    private OkHttpClient cli=new OkHttpClient();
         @Override
         protected void onHandleIntent(final Intent workIntent) {
 
@@ -38,7 +39,8 @@ public class MyIntentService extends IntentService {
                     SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
                     String dataString = workIntent.getDataString();
                     OkHttpClient client3 = new OkHttpClient();
-                    try {
+            String calle="";
+                try {
 
                         String time;
                         Calendar calander;
@@ -48,6 +50,29 @@ public class MyIntentService extends IntentService {
                         LatLng syd = ub.getLocation();
                         double solonu = syd.latitude;
                         double solonu1 = syd.longitude;
+                        String todojunto=syd.latitude+","+syd.longitude;
+                        Request request1 = new Request.Builder()
+                        .url("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + todojunto)
+                                .build();
+
+                        try {
+                            Response response1;
+                            response1 = cli.newCall(request1).execute();
+                            String google = response1.body().string();
+                            JSONObject obj=new JSONObject(google);
+                            JSONArray res=obj.getJSONArray("results");
+                            JSONObject form=res.getJSONObject(0);
+                            calle=form.getString("formatted_address");
+
+                        } catch (IOException e) {
+                            Log.d("Error", e.getMessage());
+                        }
+
+
+
+
+
+
                         JSONObject json = new JSONObject();
                         calander = Calendar.getInstance();
                         simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -57,7 +82,7 @@ public class MyIntentService extends IntentService {
                         json.put("UltimaUbicacion", solonu + "," + solonu1);
                         json.put("IdSubida", idsub);
 
-                        json.put("Calle", "Asd"/*ObtenerCallesTask.callepublica*/);
+                        json.put("Calle", calle);
                         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
                         Request request = new Request.Builder()
@@ -66,6 +91,7 @@ public class MyIntentService extends IntentService {
                                 .build();
 
                         Response response = client3.newCall(request).execute();
+                        i++;
                         Log.d("Response", response.body().string());
                     } catch (IOException | JSONException e) {
                         Log.d("Error", e.getMessage());
