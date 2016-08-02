@@ -30,11 +30,11 @@ public class MyIntentService extends IntentService {
 
         public static String IdSubida;
 
-        private final Handler mHandler = new Handler();
-        private Runnable mUpdateTimeTask;
+
         @Override
         protected void onHandleIntent(final Intent workIntent) {
-
+         final Handler mHandler = new Handler();
+           Runnable mUpdateTimeTask;
             mUpdateTimeTask = new Runnable() {
                 public void run() {
 
@@ -46,7 +46,7 @@ public class MyIntentService extends IntentService {
                         String time;
                         Calendar calander;
                         SimpleDateFormat simpleDateFormat;
-                        String url = "bdalex.hol.es/bd/ActualizarUbicacion.php";
+                      //  String url = "bdalex.hol.es/bd/ActualizarUbicacion.php";
                         Ubicacion ub = new Ubicacion(getBaseContext());
                         LatLng syd = ub.getLocation();
                         double solonu = syd.latitude;
@@ -60,11 +60,11 @@ public class MyIntentService extends IntentService {
                         json.put("UltimaUbicacion", solonu + "," + solonu1);
                         json.put("IdSubida", idsub);
 
-                        json.put("Calle", ObtenerCallesTask.callepublica);
+                        json.put("Calle", "Asd"/*ObtenerCallesTask.callepublica*/);
                         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
                         Request request = new Request.Builder()
-                                .url(url)
+                                .url("bdalex.hol.es/bd/ActualizarUbicacion.php")
                                 .post(body)
                                 .build();
 
@@ -76,7 +76,7 @@ public class MyIntentService extends IntentService {
                 }
             };
             mHandler.removeCallbacks(mUpdateTimeTask);
-            mHandler.postDelayed(mUpdateTimeTask, 1000*60*2);
+            mHandler.postDelayed(mUpdateTimeTask, 10000);
 
 
         }
