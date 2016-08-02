@@ -1,5 +1,6 @@
 package com.aexample.a41758511.myapplication;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -109,15 +111,22 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     Response response = client.newCall(request).execute();
                     String jsonId=response.body().string();
                     SharedPreferences.Editor editor = getSharedPreferences("Dic", MODE_PRIVATE).edit();
-                    editor.putString("IdSubida", jsonId.substring(0,jsonId.length()-2));
+                    editor.putString("IdSubida", jsonId.substring(0,jsonId.length()-1));
                     editor.commit();
                     Log.d("Response", response.body().string());
                 } catch (IOException | JSONException e) {
                     Log.d("Error", e.getMessage());
                 }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
-               Intent mServiceIntent = new Intent(getApplicationContext(), MyIntentService.class);
-                startService(mServiceIntent);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
+                PendingIntent pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
+
+                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        SystemClock.elapsedRealtime() +
+                                60000, pending);
                 Intent intent = new Intent(getApplicationContext(), Bajarse.class);
 // use System.currentTimeMillis() to have a unique ID for the pending intent
                 PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);

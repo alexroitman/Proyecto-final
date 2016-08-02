@@ -33,10 +33,7 @@ public class MyIntentService extends IntentService {
 
         @Override
         protected void onHandleIntent(final Intent workIntent) {
-         final Handler mHandler = new Handler();
-           Runnable mUpdateTimeTask;
-            mUpdateTimeTask = new Runnable() {
-                public void run() {
+
 
                     SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
                     String dataString = workIntent.getDataString();
@@ -64,7 +61,7 @@ public class MyIntentService extends IntentService {
                         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
                         Request request = new Request.Builder()
-                                .url("bdalex.hol.es/bd/ActualizarUbicacion.php")
+                                .url("http://bdalex.hol.es/bd/ActualizarUbicacion.php")
                                 .post(body)
                                 .build();
 
@@ -74,12 +71,11 @@ public class MyIntentService extends IntentService {
                         Log.d("Error", e.getMessage());
                     }
                 }
-            };
-            mHandler.removeCallbacks(mUpdateTimeTask);
-            mHandler.postDelayed(mUpdateTimeTask, 10000);
+
+
 
 
         }
-    }
+
 
 
