@@ -126,6 +126,8 @@ public class ListViewAdapter extends BaseAdapter{
         foto.setImageResource(ic);
         TextView nombre = (TextView) v.findViewById(R.id.list_row_title);
         nombre.setText(dir.getTexto());
+        TextView txtCond=(TextView) v.findViewById(R.id.txtCond);
+        txtCond.setText(dir.getCond());
 
         // DEVOLVEMOS VISTA
         return v;

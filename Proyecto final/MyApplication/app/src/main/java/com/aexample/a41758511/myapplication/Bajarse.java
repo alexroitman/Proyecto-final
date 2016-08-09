@@ -36,7 +36,7 @@ public class Bajarse extends AppCompatActivity {
         setContentView(R.layout.activity_bajarse);
         OkHttpClient client = new OkHttpClient();
         SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
-            String url = "http://www.bdalex.hol.es/bd/EliminarSubida.php?Sub=" + prefs.getString("IdSubida", "9");
+       /*     String url = "http://www.bdalex.hol.es/bd/EliminarSubida.php?Sub=" + prefs.getString("IdSubida", "9");
             Request request = new Request.Builder()
                     .url(url)
                     .build();
@@ -44,7 +44,7 @@ public class Bajarse extends AppCompatActivity {
                 Response res = cli.newCall(request).execute();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
 Mapa.alarmManager.cancel(Mapa.pending);
             finish();

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -55,6 +56,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     Runnable runnableCode;
     Button btnSubirme;
     Button btnActualizar;
+    Button btnBajarme;
     public static AlarmManager alarmManager;
     private GoogleMap mMap;
     public static PendingIntent pending;
@@ -74,6 +76,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         tvR.setText("Me subí al " + MainActivity.nombre + " a las " + time + " en ");
         btnSubirme=(Button)findViewById(R.id.btSubir);
+        btnBajarme=(Button) findViewById(R.id.btnBajarme);
+        btnBajarme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Mapa.alarmManager.cancel(Mapa.pending);
+                Toast.makeText(getApplicationContext(),"Se ha registrado su bajada",Toast.LENGTH_LONG).show();
+                btnSubirme.setVisibility(View.VISIBLE);
+                btnBajarme.setVisibility(View.INVISIBLE);
+            }
+        });
         btnSubirme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +111,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     json.put("IdLinea", Linea);
                     json.put("Horasubida", Hora);
                     json.put("Calle", ObtenerCallesTask.callepublica);
-
+                    json.put("Condicion", "Viajando");
 
                     RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
@@ -118,7 +130,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     Log.d("Error", e.getMessage());
                 }
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
-
+              btnSubirme.setVisibility(View.INVISIBLE);
+                btnBajarme.setVisibility(View.VISIBLE);
                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                 Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
@@ -249,8 +262,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         String todojunto=sydney.latitude+","+sydney.longitude;
         new ObtenerCallesTask().execute(todojunto);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 16.0f);
+        mMap.animateCamera(cameraUpdate);
+      //  mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+     //   mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
         MapsInitializer.initialize(this);
 
         mMap.getUiSettings().setZoomControlsEnabled(false);

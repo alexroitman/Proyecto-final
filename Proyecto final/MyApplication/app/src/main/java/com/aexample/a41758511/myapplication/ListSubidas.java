@@ -197,7 +197,7 @@ ListSubidas.lisSub.clear();
             sub.Hora= jsonResultado.getString("Horasubida");
             sub.UltimaUbicacion = jsonResultado.getString("UltimaUbicacion");
             sub.Calle = jsonResultado.getString("Calle");
-
+            sub.Condicion = jsonResultado.getString("Condicion");
             lin.add(sub);
 
         }
