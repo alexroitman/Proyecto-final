@@ -195,9 +195,9 @@ subido=0;
                 Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
                 pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
 
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                         SystemClock.elapsedRealtime() +
-                                30000,30000, pending);
+                                30000,20000, pending);
                 Intent intent = new Intent(getApplicationContext(), Bajarse.class);
 
 // use System.currentTimeMillis() to have a unique ID for the pending intent
