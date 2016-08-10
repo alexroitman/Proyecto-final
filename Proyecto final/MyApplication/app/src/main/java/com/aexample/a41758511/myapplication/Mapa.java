@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,9 +58,37 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     Button btnSubirme;
     Button btnActualizar;
     Button btnBajarme;
+    ImageButton btnRefresh;
     public static AlarmManager alarmManager;
     private GoogleMap mMap;
+    int subido;
     public static PendingIntent pending;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(subido==0)
+        {
+            btnSubirme.setVisibility(View.VISIBLE);
+            btnBajarme.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            btnSubirme.setVisibility(View.INVISIBLE);
+            btnBajarme.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
+
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,19 +100,48 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         tvR = (TextView) findViewById(R.id.tvResult);
         calander = Calendar.getInstance();
         simpleDateFormat = new SimpleDateFormat("HH:mm");
-
+subido=0;
         time = simpleDateFormat.format(calander.getTime());
-
+        /*SharedPreferences.Editor editor = getSharedPreferences("Dic", MODE_PRIVATE).edit();
+        editor.putString("IdSubida", "");
+        editor.commit();
+        SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
+        if(prefs.getString("IdSubida", "")=="")
+        {
+            btnSubirme.setVisibility(View.VISIBLE);
+            btnBajarme.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            btnSubirme.setVisibility(View.INVISIBLE);
+            btnBajarme.setVisibility(View.VISIBLE);
+        }*/
         tvR.setText("Me subí al " + MainActivity.nombre + " a las " + time + " en ");
         btnSubirme=(Button)findViewById(R.id.btSubir);
+
         btnBajarme=(Button) findViewById(R.id.btnBajarme);
         btnBajarme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Mapa.alarmManager.cancel(Mapa.pending);
+                OkHttpClient cli=new OkHttpClient();
+                SharedPreferences prefs = getSharedPreferences("Dic", MODE_PRIVATE);
+                String url = "http://www.bdalex.hol.es/bd/ActualizarCondicion.php?Condicion=BAJADO&IdSubida=" + prefs.getString("IdSubida", "9");
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
+                try {
+                    Response res = cli.newCall(request).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(getApplicationContext(),"Se ha registrado su bajada",Toast.LENGTH_LONG).show();
                 btnSubirme.setVisibility(View.VISIBLE);
                 btnBajarme.setVisibility(View.INVISIBLE);
+                String ns = Context.NOTIFICATION_SERVICE;
+                NotificationManager nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
+                nMgr.cancel(0);
+                subido=0;
             }
         });
         btnSubirme.setOnClickListener(new View.OnClickListener() {
@@ -129,11 +187,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 } catch (IOException | JSONException e) {
                     Log.d("Error", e.getMessage());
                 }
+                subido=1;
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
               btnSubirme.setVisibility(View.INVISIBLE);
                 btnBajarme.setVisibility(View.VISIBLE);
                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
                 Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
                 pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
 
@@ -151,6 +209,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                             R.drawable.logoproyecto);
+
                     n = new Notification.Builder(getApplicationContext())
                             .setContentTitle("Ya me subi")
                             .setContentText("BAJARME")
@@ -270,7 +329,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         mMap.getUiSettings().setZoomControlsEnabled(false);
         mMap.getUiSettings().setZoomGesturesEnabled(false);
-
+        btnRefresh=(ImageButton) findViewById(R.id.btnRefresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.clear();
+                tvR.setText("Me subí al " + MainActivity.nombre + " a las " + time + " en ");
+                Ubicacion ub = new Ubicacion(Mapa.this);
+                sydney = ub.getLocation();
+                String todojunto=sydney.latitude+","+sydney.longitude;
+                new ObtenerCallesTask().execute(todojunto);
+                mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 16.0f);
+                mMap.animateCamera(cameraUpdate);
+            }
+        });
 
     }
     String getIdSubida(String json)

@@ -39,9 +39,13 @@ public static ListView lv;
     public static List<SocialNetwork> lislin1 = new ArrayList<>();
     public static Activity act;
     public static LatLng ub;
-    public String nombree;
+    public static String calle;
+    public static String hora;
+    public static String condicion;
+    public static String nombree;
     public static SocialNetworkSpinnerAdapter adapter1;
     Spinner spin;
+    int j;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -59,15 +63,20 @@ public static ListView lv;
         }
         new SubidasTask(this, lv).execute("http://www.bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+MainActivity.nombre);
 
-
-
+spin.setSelection(MainActivity.spinner.getSelectedItemPosition());
+j=0;
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                adapterView.setSelection(i);
-                nombree=((SocialNetwork) adapterView.getItemAtPosition(i)).getNombre();
-                new SubidasTask(getApplicationContext(), lv).execute("http://www.bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+nombree);
+                if(j==0) {
+                    adapterView.setSelection(MainActivity.spinner.getSelectedItemPosition());
+                }
+                    j++;
+                if(j>1) {
 
+                    nombree = ((SocialNetwork) adapterView.getItemAtPosition(i)).getNombre();
+                    new SubidasTask(getApplicationContext(), lv).execute("http://www.bdalex.hol.es/bd/ListarSubidas.php?IdLinea="+nombree);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView)
@@ -81,10 +90,19 @@ public static ListView lv;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] latLng = lisSub.get(position).UbicacionSubida.split(",");
+                String[] latLng;
+                if( lisSub.get(position).UltimaUbicacion.isEmpty()) {
+                     latLng = lisSub.get(position).UbicacionSubida.split(",");
+                }
+                else
+                {
+                     latLng = lisSub.get(position).UltimaUbicacion.split(",");
+                }
                 double latitude = Double.parseDouble(latLng[0]);
                 double longitude = Double.parseDouble(latLng[1]);
-
+                hora=lisSub.get(position).Hora;
+                condicion=lisSub.get(position).Condicion;
+                calle=lisSub.get(position).Calle;
                 ub=new LatLng(latitude, longitude);
                 Intent I=new Intent(ListSubidas.this,UbicacionUsuario.class);
                 startActivity(I);

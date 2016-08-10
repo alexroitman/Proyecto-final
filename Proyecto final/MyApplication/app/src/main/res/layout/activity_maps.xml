@@ -1,4 +1,4 @@
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
@@ -17,7 +17,9 @@ android:background="#c188afd8">
     android:layout_height="match_parent"
     tools:context="com.aexample.a41758511.myapplication.MapsActivity"
     android:layout_x="8dp"
-    android:layout_y="11dp" />
+    android:layout_y="11dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true" />
     <View
         android:id="@+id/colored_bar"
         android:layout_width="333dp"
@@ -26,7 +28,12 @@ android:background="#c188afd8">
 
         android:layout_x="13dp"
         android:layout_y="453dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map"
+        android:layout_alignLeft="@+id/map"
+        android:layout_alignStart="@+id/map" />
     <Button
         android:id="@+id/btSubir"
 
@@ -43,7 +50,10 @@ android:background="#c188afd8">
         android:shadowRadius="5"
         android:layout_x="203dp"
         android:layout_y="410dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:layout_alignTop="@+id/btnBajarme"
+        android:layout_alignLeft="@+id/btnBajarme"
+        android:layout_alignStart="@+id/btnBajarme" />
 
     <TextView
         android:layout_width="331dp"
@@ -54,7 +64,12 @@ android:background="#c188afd8">
         android:layout_x="13dp"
         android:layout_y="453dp"
         android:textSize="16dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map"
+        android:layout_alignLeft="@+id/map"
+        android:layout_alignStart="@+id/map" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -63,7 +78,10 @@ android:background="#c188afd8">
         android:text="ACTUALIZAR"
         android:id="@+id/btnActualizar"
         android:layout_x="8dp"
-        android:layout_y="409dp" />
+        android:layout_y="409dp"
+        android:layout_alignTop="@+id/btSubir"
+        android:layout_alignLeft="@+id/map"
+        android:layout_alignStart="@+id/map" />
 
     <Button
         android:id="@+id/btnBajarme"
@@ -79,6 +97,18 @@ android:background="#c188afd8">
         android:shadowRadius="5"
         android:layout_x="203dp"
         android:layout_y="410dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_above="@+id/colored_bar"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map" />
 
-</AbsoluteLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnRefresh"
+        android:background="@mipmap/refresh"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map" />
+
+</RelativeLayout>
