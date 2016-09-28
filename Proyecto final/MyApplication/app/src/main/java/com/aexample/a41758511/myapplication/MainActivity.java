@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static SocialNetworkSpinnerAdapter adapter;
     Button btnSubidas;
     Button btnCercano;
-Button btn;
+public static Button btn;
     public static Context ct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

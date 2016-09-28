@@ -63,6 +63,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     Button btnActualizar;
     Button btnBajarme;
     ImageButton btnRefresh;
+    Button btnReg;
     public static AlarmManager alarmManager;
     private GoogleMap mMap;
     int subido;
@@ -266,6 +267,7 @@ subido=0;
 
                 handler.post(runnableCode);*/
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+                MainActivity.btn.setEnabled(false);
                 Intent Vuelve= new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(Vuelve);
             }

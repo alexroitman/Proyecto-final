@@ -45,7 +45,7 @@ public class Bajarse extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+        MainActivity.btn.setEnabled(false);
 Mapa.alarmManager.cancel(Mapa.pending);
             finish();
 
