@@ -65,7 +65,7 @@
         android:layout_width="165dp"
         android:layout_height="105dp"
         android:text="Subirse al colectivo mas cercano"
-        android:id="@+id/button3"
+        android:id="@+id/btnCercano"
         android:background="@layout/button_bg_round"
         android:shadowColor="#A8A8A8"
         android:shadowDx="1"

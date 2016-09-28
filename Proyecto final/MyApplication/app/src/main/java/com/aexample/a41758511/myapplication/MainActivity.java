@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public static Spinner spinner;
     public static SocialNetworkSpinnerAdapter adapter;
     Button btnSubidas;
+    Button btnCercano;
 Button btn;
     public static Context ct;
     @Override
@@ -110,9 +111,15 @@ btnSubidas.setOnClickListener(new View.OnClickListener() {
     }
 });
 
+btnCercano=(Button) findViewById(R.id.btnCercano);
+        btnCercano.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(MainActivity.this,Cercano.class);
 
-
-
+                startActivity(i);
+            }
+        });
 
       //  spinner = (Spinner) findViewById(R.id.spinner);
       //  spinner.setAdapter(new SocialNetworkSpinnerAdapter(this,items));

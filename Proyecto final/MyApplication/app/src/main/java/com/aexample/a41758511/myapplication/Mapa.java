@@ -51,8 +51,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
-public class
-Mapa extends FragmentActivity implements OnMapReadyCallback {
+public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     SimpleDateFormat simpleDateFormat;
     String time;
     Calendar calander;
@@ -193,7 +192,7 @@ subido=0;
                     Log.d("Error", e.getMessage());
                 }
                 subido=1;
-                Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+
               btnSubirme.setVisibility(View.INVISIBLE);
                 btnBajarme.setVisibility(View.VISIBLE);
                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -202,7 +201,7 @@ subido=0;
 
                 alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                         SystemClock.elapsedRealtime() +
-                                30000,20000, pending);
+                                30000,60000, pending);
                 Intent intent = new Intent(getApplicationContext(), Bajarse.class);
 
 // use System.currentTimeMillis() to have a unique ID for the pending intent
@@ -266,7 +265,9 @@ subido=0;
                 };
 
                 handler.post(runnableCode);*/
-
+                Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+                Intent Vuelve= new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(Vuelve);
             }
 
         });
@@ -324,7 +325,7 @@ subido=0;
         Ubicacion ub = new Ubicacion(Mapa.this);
         sydney = ub.getLocation();
         String todojunto=sydney.latitude+","+sydney.longitude;
-        new ObtenerCallesTask().execute(todojunto);
+        new ObtenerCallesTask().execute(todojunto,"Registrar");
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 16.0f);
         mMap.animateCamera(cameraUpdate);
@@ -399,7 +400,7 @@ subido=0;
                 Ubicacion ub = new Ubicacion(Mapa.this);
                 sydney = ub.getLocation();
                 String todojunto=sydney.latitude+","+sydney.longitude;
-                new ObtenerCallesTask().execute(todojunto);
+                new ObtenerCallesTask().execute(todojunto,"Registrar");
                 mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 16.0f);
                 mMap.animateCamera(cameraUpdate);
@@ -422,18 +423,27 @@ subido=0;
 class ObtenerCallesTask extends AsyncTask<String,Void,String> {
     public static String callepublica="";
     private OkHttpClient cli = new OkHttpClient();
-
+public String origen;
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        callepublica="";
-        callepublica=s;
-        Mapa.tvR.setText(Mapa.tvR.getText()+" "+callepublica);
+        callepublica = "";
+        callepublica = s;
+        if (origen.equals("Registrar")) {
+            Mapa.tvR.setText(Mapa.tvR.getText() + " " + callepublica);
+        }
+        if (origen.equals("Cercano1")) {
+            Cercano.tvCerca.setText("Estas en " + ObtenerCallesTask.callepublica);
+
+        }
+        if (origen.equals("Cercano2")) {
+            Cercano.tvCerca.setText(Cercano.tvCerca.getText() + ObtenerCallesTask.callepublica);
+        }
     }
     public static String result="";
     @Override
     protected String doInBackground(String... voids) {
-
+        origen=voids[1];
         Request request1 = new Request.Builder()
                 .url("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + voids[0])
                 .build();

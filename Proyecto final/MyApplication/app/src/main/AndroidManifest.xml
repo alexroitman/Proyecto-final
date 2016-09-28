@@ -15,6 +15,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logoproyecto"
@@ -60,10 +67,14 @@
             android:label="@string/title_activity_ubicacion_usuario" />
         <activity android:name=".Bajarse" />
 
-
         <service
             android:name=".MyIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+
+        <activity
+            android:name=".Cercano"
+            android:label="@string/title_activity_cercano"></activity>
     </application>
 
 </manifest>
