@@ -127,7 +127,10 @@ public class ListViewAdapter extends BaseAdapter{
         TextView nombre = (TextView) v.findViewById(R.id.list_row_title);
         nombre.setText(dir.getTexto());
         TextView txtCond=(TextView) v.findViewById(R.id.txtCond);
+        TextView txtId=(TextView) v.findViewById(R.id.tvId);
         txtCond.setText(dir.getCond());
+        txtId.setText(dir.IdSubida);
+
 
         // DEVOLVEMOS VISTA
         return v;

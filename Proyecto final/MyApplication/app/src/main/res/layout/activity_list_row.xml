@@ -7,21 +7,30 @@
     android:padding="5dip" >
 
     <!--  listrow  -->
-    <LinearLayout android:id="@+id/thumbnail"
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/tvId"
+        android:background="#c188afd8"
+        android:textColor="#b2cbe5"
+        android:height="1dp"
+        android:text="sa"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-        android:layout_marginRight="5dip">
-
-        <ImageView
-            android:id="@+id/list_row_image"
-            android:layout_width="60dip"
-            android:layout_height="60dip"
-            android:src="@drawable/logoproyecto"/>
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/list_row_image"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:src="@drawable/logoproyecto"
+        android:layout_below="@+id/tvId"
+        android:layout_alignLeft="@+id/tvId"
+        android:layout_alignStart="@+id/tvId" />
 
     <!-- titulo de la categoria -->
     <TextView
@@ -32,9 +41,10 @@
         android:textColor="#040404"
         android:typeface="sans"
         android:textSize="14dp"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_alignBottom="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail" />
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_toRightOf="@+id/list_row_image"
+        android:layout_toEndOf="@+id/list_row_image"
+        android:layout_alignBottom="@+id/list_row_image" />
 
     <ImageView
         android:layout_width="wrap_content"

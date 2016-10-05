@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.okhttp.OkHttpClient;
@@ -42,6 +43,7 @@ public static ListView lv;
     public static String calle;
     public static String hora;
     public static String condicion;
+    public static String Id;
     public static String nombree;
     public static SocialNetworkSpinnerAdapter adapter1;
     Spinner spin;
@@ -93,9 +95,13 @@ j=0;
                 String[] latLng;
                 if( lisSub.get(position).UltimaUbicacion.isEmpty()) {
                      latLng = lisSub.get(position).UbicacionSubida.split(",");
+                    TextView textView = (TextView) view.findViewById(R.id.tvId);
+                    Id = textView.getText().toString();
                 }
                 else
                 {
+                    TextView textView = (TextView) view.findViewById(R.id.tvId);
+                    Id = textView.getText().toString();
                      latLng = lisSub.get(position).UltimaUbicacion.split(",");
                 }
                 double latitude = Double.parseDouble(latLng[0]);

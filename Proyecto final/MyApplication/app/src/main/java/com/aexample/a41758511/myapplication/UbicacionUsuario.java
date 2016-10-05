@@ -1,8 +1,10 @@
 package com.aexample.a41758511.myapplication;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,11 +16,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UbicacionUsuario extends FragmentActivity implements OnMapReadyCallback {
-
+    Handler mHandler;
+Timer miRelok;
+    TimerTask MiTareaRepetitiva;
     private GoogleMap mMap;
 TextView tv;
     @Override
@@ -31,7 +44,38 @@ TextView tv;
         mapFragment.getMapAsync(this);
         tv=(TextView) findViewById(R.id.tvResultt);
         tv.setText("Esta en "+ListSubidas.calle+" a las "+ ListSubidas.hora+". Estado: "+ListSubidas.condicion);
+        miRelok=new Timer();
+
+        MiTareaRepetitiva=new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Request request = new Request.Builder()
+                                .url("http://bdalex.hol.es/bd/TraerSubida.php?IdSubida=" + ListSubidas.Id)
+                                .build();
+                        try {
+                            Response response = client.newCall(request).execute();
+                            String json = response.body().string();
+                            JSONObject obj = new JSONObject(json);
+                            mMap.clear();
+                            LatLng pos = new LatLng(Double.parseDouble(obj.getString("LatLong").split(",")[0]), Double.parseDouble(obj.getString("LatLong").split(",")[1]));
+                            mMap.addMarker(new MarkerOptions().position(pos).title("El"));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+                            tv.setText("Esta en " + obj.getString("Calle") + " a las " + obj.getString("Horasubida") + ". Estado: " + obj.getString("Condicion"));
+                        } catch (IOException | JSONException e) {
+                            Log.d("Error", e.getMessage());
+
+                        }
+                    }
+                });
+            }
+        };
+        miRelok.schedule(MiTareaRepetitiva,30000,30000);
     }
+
+
 
 
     /**
@@ -43,6 +87,7 @@ TextView tv;
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    OkHttpClient client=new OkHttpClient();
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -51,6 +96,8 @@ TextView tv;
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ListSubidas.ub));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
         MapsInitializer.initialize(this);
+
+
         if(MainActivity.nombre.equals("15")) {
             Polyline line = mMap.addPolyline(new PolylineOptions()
                     .add(new LatLng(-34.409722, -58.685378),
