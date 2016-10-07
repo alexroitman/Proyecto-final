@@ -92,6 +92,9 @@ public static Button btn;
         items.add(new SocialNetwork("Linea 76", R.drawable.a76));
 */
 btn=(Button) findViewById(R.id.button);
+        MainActivity.btn.setEnabled(true);
+
+        MainActivity.btn.setClickable(true);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,11 +103,14 @@ btn=(Button) findViewById(R.id.button);
             //    b.putInt("Linea",nombre);
             //    i.putExtras(b);
                 startActivity(i);
+                MainActivity.btn.setEnabled(false);
+                MainActivity.btn.setClickable(false);
             }
         });
 btnSubidas.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+
         Intent i=new Intent(MainActivity.this,ListSubidas.class);
 
         startActivity(i);

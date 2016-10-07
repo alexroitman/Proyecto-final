@@ -96,6 +96,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -122,6 +123,10 @@ subido=0;
             btnBajarme.setVisibility(View.VISIBLE);
         }*/
         tvR.setText("Me subí al " + MainActivity.nombre + " a las " + time + " en ");
+        Ubicacion ub = new Ubicacion(Mapa.this);
+        sydney = ub.getLocation();
+        String todojunto=sydney.latitude+","+sydney.longitude;
+        new ObtenerCallesTask().execute(todojunto,"Registrar");
         btnSubirme=(Button)findViewById(R.id.btSubir);
 
         btnBajarme=(Button) findViewById(R.id.btnBajarme);
@@ -267,7 +272,7 @@ subido=0;
 
                 handler.post(runnableCode);*/
                 Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
-                MainActivity.btn.setEnabled(false);
+
                 Intent Vuelve= new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(Vuelve);
             }
@@ -324,10 +329,8 @@ subido=0;
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        Ubicacion ub = new Ubicacion(Mapa.this);
-        sydney = ub.getLocation();
-        String todojunto=sydney.latitude+","+sydney.longitude;
-        new ObtenerCallesTask().execute(todojunto,"Registrar");
+
+
         mMap.addMarker(new MarkerOptions().position(sydney).title("Yo"));
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 16.0f);
         mMap.animateCamera(cameraUpdate);
