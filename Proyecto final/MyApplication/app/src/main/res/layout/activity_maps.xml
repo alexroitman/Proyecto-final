@@ -72,18 +72,6 @@ android:background="#c188afd8">
         android:layout_alignStart="@+id/map" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ACTUALIZAR"
-        android:id="@+id/btnActualizar"
-        android:layout_x="8dp"
-        android:layout_y="409dp"
-        android:layout_alignTop="@+id/btSubir"
-        android:layout_alignLeft="@+id/map"
-        android:layout_alignStart="@+id/map" />
-
-    <Button
         android:id="@+id/btnBajarme"
         android:text="BAJARME"
         android:textColor="#FFFFFF"

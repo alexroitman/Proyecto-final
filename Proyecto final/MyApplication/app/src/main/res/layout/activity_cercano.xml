@@ -40,7 +40,7 @@
         android:id="@+id/tvResultado"
         android:layout_x="13dp"
         android:layout_y="453dp"
-        android:textSize="16dp"
+        android:textSize="11dp"
         android:visibility="visible"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/map"

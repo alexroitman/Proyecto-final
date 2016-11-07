@@ -278,42 +278,7 @@ subido=0;
             }
 
         });
-        btnActualizar=(Button) findViewById(R.id.btnActualizar);
-        btnActualizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 OkHttpClient client3 = new OkHttpClient();
-                try {
 
-                    String url ="bdalex.hol.es/bd/ActualizarUbicacion.php";
-                    Ubicacion ub = new Ubicacion(Mapa.this);
-                    LatLng syd=ub.getLocation();
-                    double solonu= syd.latitude;
-                    double solonu1= syd.longitude;
-                    JSONObject json = new JSONObject();
-                    calander = Calendar.getInstance();
-                    simpleDateFormat = new SimpleDateFormat("HH:mm");
-
-                    time = simpleDateFormat.format(calander.getTime());
-                    json.put("Hora",time);
-                    json.put("UltimaUbicacion",solonu+","+solonu1);
-                    json.put("IdSubida",IdSubida.substring(0,IdSubida.length()-1));
-
-                    json.put("Calle",ObtenerCallesTask.callepublica);
-                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
-
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(body)
-                            .build();
-
-                    Response response = client3.newCall(request).execute();
-                    Log.d("Response", response.body().string());
-                } catch (IOException | JSONException e) {
-                    Log.d("Error", e.getMessage());
-                }
-            }
-        });
 
     }
 
@@ -443,6 +408,11 @@ public String origen;
         }
         if (origen.equals("Cercano2")) {
             Cercano.tvCerca.setText(Cercano.tvCerca.getText() + ObtenerCallesTask.callepublica);
+
+        }
+        if (origen.equals("Cercano3")) {
+            Cercano.tvCerca.setText(Cercano.tvCerca.getText() + ObtenerCallesTask.callepublica);
+
         }
     }
     public static String result="";

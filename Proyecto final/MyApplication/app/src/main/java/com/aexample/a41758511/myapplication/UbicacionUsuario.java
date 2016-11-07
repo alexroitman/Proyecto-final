@@ -75,8 +75,12 @@ TextView tv;
         miRelok.schedule(MiTareaRepetitiva,30000,30000);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        MiTareaRepetitiva.cancel();
 
-
+    }
 
     /**
      * Manipulates the map once available.
