@@ -78,7 +78,8 @@ public class Cercano extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
        LatLng yo=new LatLng(Double.parseDouble(todojunto.split(",")[0]),Double.parseDouble(todojunto.split(",")[1]));
-new CercanoTask().execute(); Cercano.mMap.addMarker(new MarkerOptions().position(yo).title("Yo"));
+        new CercanoTaskk().execute();
+        Cercano.mMap.addMarker(new MarkerOptions().position(yo).title("Yo"));
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(Cercano.sydney, 16.0f);
         Cercano.mMap.animateCamera(cameraUpdate);
         if(MainActivity.nombre.equals("15")) {

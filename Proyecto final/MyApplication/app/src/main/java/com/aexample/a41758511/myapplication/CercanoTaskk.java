@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class CercanoTask extends AsyncTask<Void ,Void,String>
+public class CercanoTaskk extends AsyncTask<Void ,Void,String>
 {  private OkHttpClient client = new OkHttpClient();
     public String parada;
     public static String bondi;
@@ -28,16 +28,18 @@ public class CercanoTask extends AsyncTask<Void ,Void,String>
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Cercano.tvCerca.setText(Cercano.tvCerca.getText()+" y su parada mas cercana esta a "+dist+" m en " );
-        new ObtenerCallesTask().execute(parada,"Cercano2");
+         new ObtenerCallesTask().execute(parada,"Cercano2");
         double lat= Double.parseDouble(parada.split(",")[0]);
         double longi= Double.parseDouble(parada.split(",")[1]);
         LatLng stop=new LatLng(lat,longi);
+        double lat1= Double.parseDouble(CercanoTaskk.bondi.split(",")[0]);
+        double longi1= Double.parseDouble(CercanoTaskk.bondi.split(",")[1]);
+        LatLng bondi=new LatLng(lat1,longi1);
         Cercano.mMap.addMarker(new MarkerOptions().position(stop).title("Parada").icon(BitmapDescriptorFactory.fromResource(R.drawable.p)));
-       CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(Cercano.sydney, 16.0f);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(Cercano.sydney, 16.0f);
         Cercano.mMap.animateCamera(cameraUpdate);
-        Cercano.tvCerca.setText(Cercano.tvCerca.getText()+" y su bondi mas cercano esta a "+CercanoTask.dis1+" m en " );
-          new ObtenerCallesTask().execute(CercanoTask.bondi,"Cercano3");
-        Cercano.mMap.addMarker(new MarkerOptions().position(stop).title("bondi").icon(BitmapDescriptorFactory.fromResource(R.drawable.b)));
+
+        Cercano.mMap.addMarker(new MarkerOptions().position(bondi).title("bondi").icon(BitmapDescriptorFactory.fromResource(R.drawable.b)));
         CameraUpdate cameraUpdate1 = CameraUpdateFactory.newLatLngZoom(Cercano.sydney, 16.0f);
         Cercano.mMap.animateCamera(cameraUpdate1);
         if (dialog.isShowing()) {
@@ -75,10 +77,10 @@ public class CercanoTask extends AsyncTask<Void ,Void,String>
                 .url("http://bdalex.hol.es/bd/ColectivoMasCercano.php?Loc="+Cercano.todojunto+"&Linea="+MainActivity.nombre)
                 .build();
         try {
-            Response response1 = client.newCall(request).execute();
-            JSONObject cerca=new JSONObject(response1.body().string());
-            bondi=cerca.getString("LatLong");
-            dis1=cerca.getInt("Distancia");
+            Response response1 = client.newCall(request1).execute();
+            JSONObject cerca1=new JSONObject(response1.body().string());
+            bondi=cerca1.getString("LatLong");
+            dis1=cerca1.getInt("Distancia");
 
         } catch (IOException | JSONException e) {
             Log.d("Error", e.getMessage());

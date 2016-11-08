@@ -408,7 +408,8 @@ public String origen;
         }
         if (origen.equals("Cercano2")) {
             Cercano.tvCerca.setText(Cercano.tvCerca.getText() + ObtenerCallesTask.callepublica);
-
+            Cercano.tvCerca.setText(Cercano.tvCerca.getText()+" y su bondi mas cercano esta a "+CercanoTaskk.dis1+" m en " );
+            new ObtenerCallesTask().execute(CercanoTaskk.bondi,"Cercano3");
         }
         if (origen.equals("Cercano3")) {
             Cercano.tvCerca.setText(Cercano.tvCerca.getText() + ObtenerCallesTask.callepublica);
