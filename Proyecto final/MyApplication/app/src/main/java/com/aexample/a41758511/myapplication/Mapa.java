@@ -68,7 +68,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     int subido;
     public static PendingIntent pending;
-
+    public double solonum1;
+    public double solonum2;
     @Override
     protected void onResume() {
         super.onResume();
@@ -154,6 +155,7 @@ subido=0;
                 subido=0;
             }
         });
+
         btnSubirme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,122 +163,104 @@ subido=0;
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                     StrictMode.setThreadPolicy(policy);
                 }
-                Ubicacion ub = new Ubicacion(Mapa.this);
-                sydney = ub.getLocation();
-                double solonum1= sydney.latitude;
-                double solonum2= sydney.longitude;
-                String Hora = time;
-                String Linea =MainActivity.nombre ;
-
-
-
+                Request requestt = new Request.Builder()
+                        .url("http://bdalex.hol.es/bd/ParadaCercana.php?Loc="+sydney+"&Linea="+MainActivity.nombre)
+                        .build();
                 try {
-                    OkHttpClient client = new OkHttpClient();
-                    //String url ="bdalex.hol.es/bd/AgregarSubida.php";
-                    JSONObject json = new JSONObject();
-                    String url ="http://bdalex.hol.es/bd/AgregarSubida.php";
-                    json.put("LatLong",solonum1+","+solonum2);
-                    json.put("IdLinea", Linea);
-                    json.put("Horasubida", Hora);
-                    json.put("Calle", ObtenerCallesTask.callepublica);
-                    json.put("Condicion", "Viajando");
+                    Response responsee = clii.newCall(requestt).execute();
+                    JSONObject cerca=new JSONObject(responsee.body().string());
 
-                    RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+                    distt=cerca.getInt("Distancia");
 
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(body)
-                            .build();
-
-                    Response response = client.newCall(request).execute();
-                    String jsonId=response.body().string();
-                    SharedPreferences.Editor editor = getSharedPreferences("Dic", MODE_PRIVATE).edit();
-                    editor.putString("IdSubida", jsonId.substring(0,jsonId.length()-1));
-                    editor.commit();
-                    Log.d("Response", response.body().string());
                 } catch (IOException | JSONException e) {
                     Log.d("Error", e.getMessage());
+
                 }
-                subido=1;
-
-              btnSubirme.setVisibility(View.INVISIBLE);
-                btnBajarme.setVisibility(View.VISIBLE);
-               alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
-                pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
-
-                alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() +
-                                30000,60000, pending);
-                Intent intent = new Intent(getApplicationContext(), Bajarse.class);
-
-// use System.currentTimeMillis() to have a unique ID for the pending intent
-                PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
-
-// build notification
-// the addAction re-use the same intent to keep the example short
-                Notification n  = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                            R.drawable.logoproyecto);
-
-                    n = new Notification.Builder(getApplicationContext())
-                            .setContentTitle("Ya me subi")
-                            .setContentText("BAJARME")
-                            .setSmallIcon(R.drawable.logoproyecto)
-                            .setContentIntent(pIntent)
-                            .setAutoCancel(true)
-                            .setLargeIcon(icon)
-                            //.addAction(R.drawable.logoproyecto, "Call", pIntent)
-
-                            .build();
-                }
+                if(distt<100)
+                {
 
 
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-                notificationManager.notify(0, n);
+                    Ubicacion ub = new Ubicacion(Mapa.this);
+                    sydney = ub.getLocation();
+                    solonum1 = sydney.latitude;
+                    solonum2 = sydney.longitude;
+                    String Hora = time;
+                    String Linea = MainActivity.nombre;
 
-                //Intent intent = new Intent(this, ListarEventos.class);
-                //startActivity(intent);
-               /* handler=new Handler();
-// Define the code block to be executed
-                runnableCode = new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            OkHttpClient client = new OkHttpClient();
-                            String url ="http://bdalex.hol.es/bd/ActualizarUbicacion.php";
-                            Ubicacion ub = new Ubicacion(MapsActivity.this);
-                            JSONObject json = new JSONObject();
-                            json.put("UltimaUbicacion",ub.getLocation());
-                            json.put("IdSubida",IdSubida);
-                            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
-                            Request request = new Request.Builder()
-                                    .url(url)
-                                    .post(body)
-                                    .build();
+                    try {
+                        OkHttpClient client = new OkHttpClient();
+                        //String url ="bdalex.hol.es/bd/AgregarSubida.php";
+                        JSONObject json = new JSONObject();
+                        String url = "http://bdalex.hol.es/bd/AgregarSubida.php";
+                        json.put("LatLong", solonum1 + "," + solonum2);
+                        json.put("IdLinea", Linea);
+                        json.put("Horasubida", Hora);
+                        json.put("Calle", ObtenerCallesTask.callepublica);
+                        json.put("Condicion", "Viajando");
 
-                            Response response = client.newCall(request).execute();
-                            Log.d("Response", response.body().string());
-                        } catch (IOException | JSONException e) {
-                            Log.d("Error", e.getMessage());
-                        }
-                        Log.d("Handlers", "Called on main thread");
+                        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
-                        handler.postDelayed(runnableCode, 60000);
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .post(body)
+                                .build();
+
+                        Response response = client.newCall(request).execute();
+                        String jsonId = response.body().string();
+                        SharedPreferences.Editor editor = getSharedPreferences("Dic", MODE_PRIVATE).edit();
+                        editor.putString("IdSubida", jsonId.substring(0, jsonId.length() - 1));
+                        editor.commit();
+                        Log.d("Response", response.body().string());
+                    } catch (IOException | JSONException e) {
+                        Log.d("Error", e.getMessage());
                     }
-                };
+                    subido = 1;
 
-                handler.post(runnableCode);*/
-                Toast.makeText(getApplicationContext(),"Subida registrada correctamente",Toast.LENGTH_LONG).show();
+                    btnSubirme.setVisibility(View.INVISIBLE);
+                    btnBajarme.setVisibility(View.VISIBLE);
+                    alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    Intent alarmIntent = new Intent(getApplicationContext(), MyIntentService.class);
+                    pending = PendingIntent.getService(getApplicationContext(), 0, alarmIntent, 0);
 
-                Intent Vuelve= new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(Vuelve);
+                    alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                            SystemClock.elapsedRealtime() +
+                                    30000, 60000, pending);
+                    Intent intent = new Intent(getApplicationContext(), Bajarse.class);
+                    PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(), intent, 0);
+
+                    Notification n = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                        Bitmap icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                                R.drawable.logoproyecto);
+
+                        n = new Notification.Builder(getApplicationContext())
+                                .setContentTitle("Ya me subi")
+                                .setContentText("BAJARME")
+                                .setSmallIcon(R.drawable.logoproyecto)
+                                .setContentIntent(pIntent)
+                                .setAutoCancel(true)
+                                .setLargeIcon(icon)
+                                //.addAction(R.drawable.logoproyecto, "Call", pIntent)
+
+                                .build();
+                    }
+
+
+                    NotificationManager notificationManager =
+                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                    notificationManager.notify(0, n);
+
+                    Toast.makeText(getApplicationContext(), "Subida registrada correctamente", Toast.LENGTH_LONG).show();
+
+                    Intent Vuelve = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(Vuelve);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Usted no se encuentra cerca de la parada", Toast.LENGTH_LONG).show();
+                }
             }
-
         });
 
 
@@ -388,6 +372,9 @@ subido=0;
             return new String("Error");
         }
     }
+    private OkHttpClient clii=new OkHttpClient();
+    int distt;
+
 }
 
 class ObtenerCallesTask extends AsyncTask<String,Void,String> {
