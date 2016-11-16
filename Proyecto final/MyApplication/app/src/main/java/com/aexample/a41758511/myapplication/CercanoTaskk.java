@@ -40,7 +40,7 @@ public class CercanoTaskk extends AsyncTask<Void ,Void,String>
         Cercano.mMap.animateCamera(cameraUpdate);
 
         Cercano.mMap.addMarker(new MarkerOptions().position(bondi).title("bondi").icon(BitmapDescriptorFactory.fromResource(R.drawable.b)));
-        CameraUpdate cameraUpdate1 = CameraUpdateFactory.newLatLngZoom(Cercano.sydney, 16.0f);
+        CameraUpdate cameraUpdate1 = CameraUpdateFactory.newLatLngZoom(bondi, 16.0f);
         Cercano.mMap.animateCamera(cameraUpdate1);
         if (dialog.isShowing()) {
             dialog.dismiss();

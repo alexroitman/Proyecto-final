@@ -6,14 +6,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -98,15 +101,25 @@ btn=(Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(MainActivity.this,Mapa.class);
-           //     Bundle b=new Bundle();
-            //    b.putInt("Linea",nombre);
-            //    i.putExtras(b);
-                startActivity(i);
-                MainActivity.btn.setEnabled(false);
-                MainActivity.btn.setClickable(false);
+                final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    buildAlertMessageNoGps();
+                }
+                else {
+
+
+                    Intent i = new Intent(MainActivity.this, Mapa.class);
+                    //     Bundle b=new Bundle();
+                    //    b.putInt("Linea",nombre);
+                    //    i.putExtras(b);
+                    startActivity(i);
+                    MainActivity.btn.setEnabled(false);
+                    MainActivity.btn.setClickable(false);
+                }
             }
         });
+
 btnSubidas.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -121,9 +134,16 @@ btnCercano=(Button) findViewById(R.id.btnCercano);
         btnCercano.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(MainActivity.this,Cercano.class);
+                final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
-                startActivity(i);
+                if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                    buildAlertMessageNoGps();
+                }
+                else {
+                    Intent i = new Intent(MainActivity.this, Cercano.class);
+
+                    startActivity(i);
+                }
             }
         });
 
@@ -147,7 +167,23 @@ btnCercano=(Button) findViewById(R.id.btnCercano);
             }
         });
         }
-
+    private void buildAlertMessageNoGps(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Su ubicacion esta desactivada, desea activarla?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 }
 
