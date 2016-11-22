@@ -2,6 +2,7 @@ package com.aexample.a41758511.myapplication;
 
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class UbicacionUsuario extends FragmentActivity implements OnMapReadyCall
 Timer miRelok;
     TimerTask MiTareaRepetitiva;
     private GoogleMap mMap;
+    OkHttpClient clien=new OkHttpClient();
 TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +54,14 @@ TextView tv;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+                        StrictMode.setThreadPolicy(policy);
                         Request request = new Request.Builder()
                                 .url("http://bdalex.hol.es/bd/TraerSubida.php?IdSubida=" + ListSubidas.Id)
                                 .build();
                         try {
-                            Response response = client.newCall(request).execute();
+                            Response response = clien.newCall(request).execute();
                             String json = response.body().string();
                             JSONObject obj = new JSONObject(json);
                             mMap.clear();
@@ -91,7 +96,7 @@ TextView tv;
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    OkHttpClient client=new OkHttpClient();
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -146,11 +151,12 @@ TextView tv;
                             new LatLng(-34.605593, -58.433110),
                             new LatLng(-34.607218, -58.432755),
                             new LatLng(-34.608269, -58.433839),
-                            new LatLng(-34.608605, -58.434719),
-                            new LatLng(-34.608799, -58.436146),
-                            new LatLng(-34.616715, -58.432888),
-                            new LatLng(-34.616729, -58.432910),
-                            new LatLng(-34.615204, -58.429452),
+                            new LatLng(-34.608729, -58.434708),
+                            new LatLng(-34.608799, -58.430481),
+
+                            new LatLng(-34.615439, -58.430073),
+
+                            new LatLng(-34.615228, -58.429233),
                             new LatLng(-34.642780, -58.422840),
                             new LatLng(-34.646337, -58.419890),
                             new LatLng(-34.646169, -58.416210),

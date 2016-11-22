@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Cercano extends FragmentActivity implements OnMapReadyCallback {
 
@@ -42,6 +44,8 @@ public class Cercano extends FragmentActivity implements OnMapReadyCallback {
     public static Context ct;
     public static TextView tvCerca;
     public static String todojunto;
+    Timer miRelok;
+    TimerTask MiTareaRepetitiva;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +59,23 @@ public class Cercano extends FragmentActivity implements OnMapReadyCallback {
         Ubicacion ub = new Ubicacion(Cercano.this);
         sydney = ub.getLocation();
        todojunto=sydney.latitude+","+sydney.longitude;
-        new ObtenerCallesTask().execute(todojunto,"Cercano1");
+        miRelok=new Timer();
+        new ObtenerCallesTask().execute(todojunto, "Cercano1");
+        MiTareaRepetitiva=new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+new CercanoTaskk().execute();
+                    }
+                });
+            }
+        };
+        miRelok.schedule(MiTareaRepetitiva,30000,30000);
+
         ct=this;
 
 
@@ -126,11 +146,12 @@ public class Cercano extends FragmentActivity implements OnMapReadyCallback {
                             new LatLng(-34.605593, -58.433110),
                             new LatLng(-34.607218, -58.432755),
                             new LatLng(-34.608269, -58.433839),
-                            new LatLng(-34.608605, -58.434719),
-                            new LatLng(-34.608799, -58.436146),
-                            new LatLng(-34.616715, -58.432888),
-                            new LatLng(-34.616729, -58.432910),
-                            new LatLng(-34.615204, -58.429452),
+                            new LatLng(-34.608729, -58.434708),
+                            new LatLng(-34.608799, -58.430481),
+
+                            new LatLng(-34.615439, -58.430073),
+
+                            new LatLng(-34.615228, -58.429233),
                             new LatLng(-34.642780, -58.422840),
                             new LatLng(-34.646337, -58.419890),
                             new LatLng(-34.646169, -58.416210),

@@ -27,7 +27,7 @@ public class CercanoTaskk extends AsyncTask<Void ,Void,String>
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Cercano.tvCerca.setText(Cercano.tvCerca.getText()+" y su parada mas cercana esta a "+dist+" m en " );
+        Cercano.tvCerca.setText(Cercano.tvCerca.getText()+" Su parada mas cercana esta a "+dist+" m en " );
          new ObtenerCallesTask().execute(parada,"Cercano2");
         double lat= Double.parseDouble(parada.split(",")[0]);
         double longi= Double.parseDouble(parada.split(",")[1]);
@@ -50,7 +50,9 @@ public class CercanoTaskk extends AsyncTask<Void ,Void,String>
 
     @Override
     protected void onPreExecute() {
+
         super.onPreExecute();
+        Cercano.tvCerca.setText("");
         dialog = new ProgressDialog(Cercano.ct);
         dialog.setMessage("Calculando, por favor espere");
         dialog.setCanceledOnTouchOutside(false);
