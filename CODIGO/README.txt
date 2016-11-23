@@ -7,3 +7,4 @@ Ahora si, lo unico que debes hacer sera abrir android studio y darle play a la a
 superior al medio). Una vez apretado te mostrara un dialogo con todos tus dispositivos conectados con depuracion activada
 y todos tus dispositivos virtuales levantados. Seleccione el que desee y haga click en haceptar, espere a que compile 
 y disfrute de ya me subi
+Para instalarlo debemos crear la base de datos e ejecutar el scriptque hay en esta misma carpeta
