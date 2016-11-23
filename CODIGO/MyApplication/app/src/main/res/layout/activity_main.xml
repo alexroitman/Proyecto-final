@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.alex.pruebaspinner.MainActivity"
+    android:background="#c188afd8">
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_x="-3dp"
+        android:layout_y="142dp"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="135dp"
+        android:layout_height="95dp"
+        android:text="Registrar \n subida"
+        android:id="@+id/button"
+        android:background="@layout/button_bg_round"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="1"
+        android:shadowDy="4"
+        android:shadowRadius="5"
+        android:layout_x="0dp"
+        android:textStyle="bold"
+        android:layout_y="238dp"
+        android:layout_alignTop="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="135dp"
+        android:layout_height="95dp"
+        android:text="SEGUIR \n LINEA"
+        android:id="@+id/button2"
+        android:background="@layout/button_bg_round"
+        android:textSize="20dp"
+        android:textColor="#FFFFFF"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="1"
+        android:shadowDy="4"
+        android:shadowRadius="5"
+        android:layout_x="153dp"
+        android:layout_y="240dp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/spinner"
+        android:layout_alignEnd="@+id/spinner" />
+
+    <Button
+        android:layout_width="165dp"
+        android:layout_height="105dp"
+        android:text="Subirse al colectivo mas cercano"
+        android:id="@+id/btnCercano"
+        android:background="@layout/button_bg_round"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="1"
+        android:shadowDy="4"
+        android:textColor="#FFFFFF"
+        android:shadowRadius="5"
+        android:textSize="20dp"
+        android:layout_x="60dp"
+        android:layout_y="365dp"
+    android:textStyle="bold"
+
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp" />
+
+    <ImageView
+        android:layout_width="144dp"
+        android:layout_height="119dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/logoproyecto"
+        android:layout_x="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

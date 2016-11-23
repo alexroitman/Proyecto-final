@@ -1,0 +1,6 @@
+La aplicacion esta diseñada exclusivamente para usuarios con android. Es compatible con android 4.4 en adelante
+Esta misma se basa en tres conjuntos de partes para formar la aplicacion:
+El programa:android
+El servidor Web: Api en hostinger
+La base de datos: Hostinger
+El android se  conecta con el servidor web y el servidor web se conecta con la base de datos, es como una triangulacion en las 3 partes.
